@@ -1,0 +1,14 @@
+[project]
+name = "$project_name"
+version = "0.1.0"
+description = "$description"
+authors = [{name = "$author"}]
+requires-python = ">=$python_version"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.backends._legacy:_Backend"

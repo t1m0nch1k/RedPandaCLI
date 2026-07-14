@@ -1,0 +1,10 @@
+{
+  "name": "cli-app",
+  "description": "CLI application with typer, rich, and testing setup",
+  "version": "1.0.0",
+  "variables": [
+    {"name": "project_name", "description": "App name (snake_case)", "default": "my_app"},
+    {"name": "description", "description": "Short description", "default": "A CLI app"},
+    {"name": "author", "description": "Author name", "default": "Author"}
+  ]
+}

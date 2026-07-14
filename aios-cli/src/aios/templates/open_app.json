@@ -1,0 +1,1 @@
+{"name": "open_app", "tool": "open_app", "args_schema": {"app": "string"}, "description": "Open an application by name"}

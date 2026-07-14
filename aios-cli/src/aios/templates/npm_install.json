@@ -1,0 +1,1 @@
+{"name": "npm_install", "tool": "shell", "args_schema": {"package": "string"}, "fixed_args": {"command": "npm install"}, "description": "Install an npm package"}

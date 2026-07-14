@@ -1,0 +1,11 @@
+{
+  "name": "plugin",
+  "description": "AIOS plugin with tools, hooks, and config schema",
+  "version": "1.0.0",
+  "variables": [
+    {"name": "plugin_name", "description": "Plugin name (snake_case)", "default": "my_plugin"},
+    {"name": "description", "description": "Plugin description", "default": "An AIOS plugin"},
+    {"name": "author", "description": "Author name", "default": "Author"},
+    {"name": "version", "description": "Plugin version", "default": "0.1.0"}
+  ]
+}

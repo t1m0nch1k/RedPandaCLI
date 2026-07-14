@@ -1,0 +1,1 @@
+{"name": "create_folder", "tool": "filesystem", "args_schema": {"path": "string"}, "fixed_args": {"action": "create_folder"}, "description": "Create a folder"}

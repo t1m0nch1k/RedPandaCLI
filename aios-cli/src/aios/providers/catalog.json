@@ -1,0 +1,43 @@
+{
+  "providers": [
+    {
+      "name": "gemini",
+      "description": "Google Gemini — built-in native provider (use `aios provider-register gemini -u https://generativelanguage.googleapis.com/v1beta -k $KEY`)",
+      "author": "AIOS",
+      "builtin": true,
+      "tags": ["google", "gemini", "multimodal"]
+    },
+    {
+      "name": "anthropic",
+      "description": "Anthropic Claude — advanced AI with safety features, supports tool use and long context",
+      "author": "AIOS Community",
+      "repo": "https://github.com/aios-community/aios-provider-anthropic",
+      "homepage": "https://github.com/aios-community/aios-provider-anthropic",
+      "tags": ["anthropic", "claude", "safety"]
+    },
+    {
+      "name": "deepseek",
+      "description": "DeepSeek — open-weight models with strong reasoning and code generation",
+      "author": "AIOS Community",
+      "repo": "https://github.com/aios-community/aios-provider-deepseek",
+      "homepage": "https://github.com/aios-community/aios-provider-deepseek",
+      "tags": ["deepseek", "reasoning", "open"]
+    },
+    {
+      "name": "xai-grok",
+      "description": "xAI Grok — real-time knowledge with internet access and幽默 personality",
+      "author": "AIOS Community",
+      "repo": "https://github.com/aios-community/aios-provider-grok",
+      "homepage": "https://github.com/aios-community/aios-provider-grok",
+      "tags": ["xai", "grok", "real-time"]
+    },
+    {
+      "name": "mistral",
+      "description": "Mistral AI — efficient, open-weight models with strong multilingual support",
+      "author": "AIOS Community",
+      "repo": "https://github.com/aios-community/aios-provider-mistral",
+      "homepage": "https://github.com/aios-community/aios-provider-mistral",
+      "tags": ["mistral", "efficient", "open"]
+    }
+  ]
+}

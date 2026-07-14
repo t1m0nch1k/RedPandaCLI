@@ -1,0 +1,11 @@
+{
+  "name": "python-package",
+  "description": "Minimal Python package with pyproject.toml, src layout, and tests",
+  "version": "1.0.0",
+  "variables": [
+    {"name": "project_name", "description": "Package name (snake_case)", "default": "my_package"},
+    {"name": "description", "description": "Short description", "default": "A Python package"},
+    {"name": "author", "description": "Author name", "default": "Author"},
+    {"name": "python_version", "description": "Python version", "default": "3.12"}
+  ]
+}

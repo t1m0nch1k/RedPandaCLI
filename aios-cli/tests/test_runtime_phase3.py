@@ -1,0 +1,43 @@
+import pytest
+from unittest.mock import AsyncMock, patch
+
+from aios.runtime.runtime import Runtime, RuntimeConfig
+
+class TestRuntimeMission:
+    async def test_run_mission_delegates_to_planner_and_executor(self):
+        mock_tool_registry = AsyncMock()
+        mock_tool_registry.list = lambda: []
+        config = RuntimeConfig(tool_registry=mock_tool_registry)
+        runtime = Runtime(config)
+
+        # Mock dependencies since we aren't initializing provider/registry
+        mock_planner = AsyncMock()
+        from aios.runtime.models import Plan, PlanStatus, Step
+        mock_planner.plan = AsyncMock(return_value=Plan(id="123", goal="Test mission", status=PlanStatus.COMPLETED, steps=[Step(id="1", description="Do something", expected_outcome="Done")]))
+        mock_planner.replan = AsyncMock(return_value=None)
+        
+        mock_executor = AsyncMock()
+        # Mock executor to return a final state indicating completion on the first run
+        from aios.runtime.models import AgentState
+        mock_executor.run = AsyncMock(return_value=AgentState.COMPLETED)
+        
+        mock_context = AsyncMock()
+
+        runtime._planner = mock_planner
+        runtime._executor = mock_executor
+        runtime._context_manager = mock_context
+        runtime._initialized = True
+
+        # Run mission
+        from unittest.mock import MagicMock
+        mock_conversation = MagicMock()
+
+        events = []
+        async for event in runtime.run_mission("Test mission", conversation=mock_conversation):
+            events.append(event)
+
+        # Verify planner was called
+        mock_planner.plan.assert_called_once()
+        
+        # Verify executor was called
+        mock_executor.run.assert_called_once()

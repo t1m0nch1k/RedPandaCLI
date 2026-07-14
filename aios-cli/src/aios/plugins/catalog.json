@@ -1,0 +1,76 @@
+{
+  "plugins": [
+    {
+      "name": "web-search",
+      "description": "Advanced web search and content extraction plugin",
+      "author": "AIOS Community",
+      "repo": "https://github.com/aios-community/plugin-web-search",
+      "homepage": "https://github.com/aios-community/plugin-web-search",
+      "tags": ["search", "web", "fetch"]
+    },
+    {
+      "name": "code-review",
+      "description": "Automated code review with static analysis and best practices",
+      "author": "AIOS Community",
+      "repo": "https://github.com/aios-community/plugin-code-review",
+      "homepage": "https://github.com/aios-community/plugin-code-review",
+      "tags": ["code", "review", "lint"]
+    },
+    {
+      "name": "docker",
+      "description": "Docker container management: build, run, compose",
+      "author": "AIOS Community",
+      "repo": "https://github.com/aios-community/plugin-docker",
+      "homepage": "https://github.com/aios-community/plugin-docker",
+      "tags": ["docker", "container", "devops"]
+    },
+    {
+      "name": "notion",
+      "description": "Notion integration: read/write pages, databases, search",
+      "author": "AIOS Community",
+      "repo": "https://github.com/aios-community/plugin-notion",
+      "homepage": "https://github.com/aios-community/plugin-notion",
+      "tags": ["notion", "docs", "knowledge"]
+    },
+    {
+      "name": "jira",
+      "description": "Jira integration: issues, sprints, projects",
+      "author": "AIOS Community",
+      "repo": "https://github.com/aios-community/plugin-jira",
+      "homepage": "https://github.com/aios-community/plugin-jira",
+      "tags": ["jira", "project-management", "issues"]
+    },
+    {
+      "name": "slack",
+      "description": "Slack integration: messages, channels, threads",
+      "author": "AIOS Community",
+      "repo": "https://github.com/aios-community/plugin-slack",
+      "homepage": "https://github.com/aios-community/plugin-slack",
+      "tags": ["slack", "messaging", "collaboration"]
+    },
+    {
+      "name": "database",
+      "description": "Database exploration and querying (PostgreSQL, MySQL, SQLite)",
+      "author": "AIOS Community",
+      "repo": "https://github.com/aios-community/plugin-database",
+      "homepage": "https://github.com/aios-community/plugin-database",
+      "tags": ["database", "sql", "query"]
+    },
+    {
+      "name": "telemetry",
+      "description": "Usage telemetry and analytics for AIOS sessions",
+      "author": "AIOS Community",
+      "repo": "https://github.com/aios-community/plugin-telemetry",
+      "homepage": "https://github.com/aios-community/plugin-telemetry",
+      "tags": ["telemetry", "analytics", "metrics"]
+    },
+    {
+      "name": "memory-tools",
+      "description": "Enhanced memory tools: semantic search, summarization, graph queries",
+      "author": "AIOS Community",
+      "repo": "https://github.com/aios-community/plugin-memory-tools",
+      "homepage": "https://github.com/aios-community/plugin-memory-tools",
+      "tags": ["memory", "search", "knowledge"]
+    }
+  ]
+}

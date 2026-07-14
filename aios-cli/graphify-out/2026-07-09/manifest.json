@@ -1,0 +1,567 @@
+{
+  "pyproject.toml": {
+    "mtime": 1783569050.495341,
+    "ast_hash": "8ca2ad68e55f47ff3b152085d5987c52",
+    "semantic_hash": "8ca2ad68e55f47ff3b152085d5987c52"
+  },
+  "src/aios/__init__.py": {
+    "mtime": 1783402736.4178457,
+    "ast_hash": "4867131295172353fe6c2295851defc7",
+    "semantic_hash": "4867131295172353fe6c2295851defc7"
+  },
+  "src/aios/cli/__init__.py": {
+    "mtime": 1783402736.6662185,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/cli/branding.py": {
+    "mtime": 1783488814.6531055,
+    "ast_hash": "c7f903bf07e297d3da76368c1be9640b",
+    "semantic_hash": "c7f903bf07e297d3da76368c1be9640b"
+  },
+  "src/aios/cli/main.py": {
+    "mtime": 1783586909.5946832,
+    "ast_hash": "c034c7becbf7edf3a73707db2c685ce9",
+    "semantic_hash": "c034c7becbf7edf3a73707db2c685ce9"
+  },
+  "src/aios/cli/slash.py": {
+    "mtime": 1783586909.5888867,
+    "ast_hash": "eb62b7c0f5de48fd46bd1fe854f76794",
+    "semantic_hash": "eb62b7c0f5de48fd46bd1fe854f76794"
+  },
+  "src/aios/cli/tui/__init__.py": {
+    "mtime": 1783501690.2237618,
+    "ast_hash": "b38d18f8167bef9bf3b532031f860d0c",
+    "semantic_hash": "b38d18f8167bef9bf3b532031f860d0c"
+  },
+  "src/aios/cli/tui/app.py": {
+    "mtime": 1783586909.5901234,
+    "ast_hash": "afc36ca3dcfec652147e75053e6936b5",
+    "semantic_hash": "afc36ca3dcfec652147e75053e6936b5"
+  },
+  "src/aios/cli/tui/screens.py": {
+    "mtime": 1783586909.585235,
+    "ast_hash": "cef0a4ae777631a85de8f6a42066fb02",
+    "semantic_hash": "cef0a4ae777631a85de8f6a42066fb02"
+  },
+  "src/aios/cli/tui/widgets.py": {
+    "mtime": 1783586909.5822942,
+    "ast_hash": "4ebdd882975a81d04b7fb92a7b11b26d",
+    "semantic_hash": "4ebdd882975a81d04b7fb92a7b11b26d"
+  },
+  "src/aios/config/__init__.py": {
+    "mtime": 1783402736.4886644,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/config/settings.py": {
+    "mtime": 1783586909.575426,
+    "ast_hash": "d5a29e055e2e7e49c3b660800f028a61",
+    "semantic_hash": "d5a29e055e2e7e49c3b660800f028a61"
+  },
+  "src/aios/context/budget.py": {
+    "mtime": 1783586909.575426,
+    "ast_hash": "c4346dc2032f8ac65c18eea8fa313f59",
+    "semantic_hash": "c4346dc2032f8ac65c18eea8fa313f59"
+  },
+  "src/aios/context/compactor.py": {
+    "mtime": 1783586909.573369,
+    "ast_hash": "58a5556488e6c129b0b59bb6b73bb6f4",
+    "semantic_hash": "58a5556488e6c129b0b59bb6b73bb6f4"
+  },
+  "src/aios/context/manager.py": {
+    "mtime": 1783586909.5782995,
+    "ast_hash": "c8ce9337b48535d24e636493b9a77b89",
+    "semantic_hash": "c8ce9337b48535d24e636493b9a77b89"
+  },
+  "src/aios/context/window.py": {
+    "mtime": 1783586909.573369,
+    "ast_hash": "ef6a5cc8ea3664d4a605db412bc95a30",
+    "semantic_hash": "ef6a5cc8ea3664d4a605db412bc95a30"
+  },
+  "src/aios/core/__init__.py": {
+    "mtime": 1783402736.8003964,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/core/models.py": {
+    "mtime": 1783572178.1495595,
+    "ast_hash": "00f6e63134072e9a5e5dcb1033ef2865",
+    "semantic_hash": "00f6e63134072e9a5e5dcb1033ef2865"
+  },
+  "src/aios/events/__init__.py": {
+    "mtime": 1783402736.6312177,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/events/bus.py": {
+    "mtime": 1783493575.5497525,
+    "ast_hash": "e8d9ba0d433b26c749055fb3265ae97d",
+    "semantic_hash": "e8d9ba0d433b26c749055fb3265ae97d"
+  },
+  "src/aios/executor/__init__.py": {
+    "mtime": 1783402736.547666,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/executor/agent.py": {
+    "mtime": 1783586909.5718203,
+    "ast_hash": "c7f6ceba4dcc171d54cad46d106c4123",
+    "semantic_hash": "c7f6ceba4dcc171d54cad46d106c4123"
+  },
+  "src/aios/executor/coding_agent.py": {
+    "mtime": 1783586909.5782995,
+    "ast_hash": "b362030ffe091b9df880075cd102e255",
+    "semantic_hash": "b362030ffe091b9df880075cd102e255"
+  },
+  "src/aios/executor/engine.py": {
+    "mtime": 1783586909.5888867,
+    "ast_hash": "4de91518ba75880ea71d57e17b033d98",
+    "semantic_hash": "4de91518ba75880ea71d57e17b033d98"
+  },
+  "src/aios/hooks/builtin.py": {
+    "mtime": 1783586909.5815885,
+    "ast_hash": "1f515176e45ea206d7d516edb2ec259c",
+    "semantic_hash": "1f515176e45ea206d7d516edb2ec259c"
+  },
+  "src/aios/hooks/events.py": {
+    "mtime": 1783586909.5864775,
+    "ast_hash": "50988e58ca9cc2b056a2d30b9e45f2c6",
+    "semantic_hash": "50988e58ca9cc2b056a2d30b9e45f2c6"
+  },
+  "src/aios/hooks/git_hooks.py": {
+    "mtime": 1783586909.5782995,
+    "ast_hash": "b1c5b0dfa7d665bc0381e75c12311847",
+    "semantic_hash": "b1c5b0dfa7d665bc0381e75c12311847"
+  },
+  "src/aios/hooks/manager.py": {
+    "mtime": 1783586909.573369,
+    "ast_hash": "169e860b8cad5a29ea659c0606905d91",
+    "semantic_hash": "169e860b8cad5a29ea659c0606905d91"
+  },
+  "src/aios/logging/__init__.py": {
+    "mtime": 1783402736.5596664,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/mcp/__init__.py": {
+    "mtime": 1783529441.0602615,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/mcp/adapter.py": {
+    "mtime": 1783529467.872194,
+    "ast_hash": "be1fe1c61f585b3f15ef6c621b9af6bf",
+    "semantic_hash": "be1fe1c61f585b3f15ef6c621b9af6bf"
+  },
+  "src/aios/mcp/catalog.json": {
+    "mtime": 1783529482.9109833,
+    "ast_hash": "40945b301d7129889d8377c66916be52",
+    "semantic_hash": "40945b301d7129889d8377c66916be52"
+  },
+  "src/aios/mcp/client.py": {
+    "mtime": 1783586909.5718203,
+    "ast_hash": "927a0df3ff51fb2dbed89ce5c796ed8f",
+    "semantic_hash": "927a0df3ff51fb2dbed89ce5c796ed8f"
+  },
+  "src/aios/mcp/registry.py": {
+    "mtime": 1783586909.5718203,
+    "ast_hash": "26b3828c44e31e35e6db31d09bc572fb",
+    "semantic_hash": "26b3828c44e31e35e6db31d09bc572fb"
+  },
+  "src/aios/mcp/transport.py": {
+    "mtime": 1783586909.575426,
+    "ast_hash": "f49760f2735b38b72051e92ea3c72ee0",
+    "semantic_hash": "f49760f2735b38b72051e92ea3c72ee0"
+  },
+  "src/aios/memory/__init__.py": {
+    "mtime": 1783402736.844404,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/memory/auto.py": {
+    "mtime": 1783586909.5834863,
+    "ast_hash": "c85b5ccba33e0ff3eb8603ebc25ed9f5",
+    "semantic_hash": "c85b5ccba33e0ff3eb8603ebc25ed9f5"
+  },
+  "src/aios/memory/history.py": {
+    "mtime": 1783493575.5517728,
+    "ast_hash": "39e0cadd7ad5b149b56e2805ec67dfa8",
+    "semantic_hash": "39e0cadd7ad5b149b56e2805ec67dfa8"
+  },
+  "src/aios/memory/project.py": {
+    "mtime": 1783586909.5822942,
+    "ast_hash": "06803bb45846af570af2d613a8aaf166",
+    "semantic_hash": "06803bb45846af570af2d613a8aaf166"
+  },
+  "src/aios/permissions/base.py": {
+    "mtime": 1783586909.5840535,
+    "ast_hash": "8eb4661e3a2973087b41a971de854a51",
+    "semantic_hash": "8eb4661e3a2973087b41a971de854a51"
+  },
+  "src/aios/permissions/manager.py": {
+    "mtime": 1783586909.585235,
+    "ast_hash": "5a2965b4cad6f697c955fa149dae5892",
+    "semantic_hash": "5a2965b4cad6f697c955fa149dae5892"
+  },
+  "src/aios/permissions/policy.py": {
+    "mtime": 1783586909.582859,
+    "ast_hash": "9354691ac209bfc26b592778d82da652",
+    "semantic_hash": "9354691ac209bfc26b592778d82da652"
+  },
+  "src/aios/permissions/profiles.py": {
+    "mtime": 1783586909.5782995,
+    "ast_hash": "8fbe4e608fcefd6c026fd75ea7796696",
+    "semantic_hash": "8fbe4e608fcefd6c026fd75ea7796696"
+  },
+  "src/aios/permissions/rules.py": {
+    "mtime": 1783586909.575426,
+    "ast_hash": "a7e8926e6ff33344b8ec42b467bb914e",
+    "semantic_hash": "a7e8926e6ff33344b8ec42b467bb914e"
+  },
+  "src/aios/plugins/__init__.py": {
+    "mtime": 1783530272.16459,
+    "ast_hash": "9e137a794faad044bdd5204257500f59",
+    "semantic_hash": "9e137a794faad044bdd5204257500f59"
+  },
+  "src/aios/plugins/base.py": {
+    "mtime": 1783586909.5718203,
+    "ast_hash": "f66242630e25890d0daf1c8f8d3832ef",
+    "semantic_hash": "f66242630e25890d0daf1c8f8d3832ef"
+  },
+  "src/aios/plugins/catalog.json": {
+    "mtime": 1783530310.298487,
+    "ast_hash": "a8de06ecd85a0d1b19bea65ddbbdd71a",
+    "semantic_hash": "a8de06ecd85a0d1b19bea65ddbbdd71a"
+  },
+  "src/aios/plugins/catalog.py": {
+    "mtime": 1783530351.1817336,
+    "ast_hash": "df64a43b403b5643b61e09d6c3aeea8e",
+    "semantic_hash": "df64a43b403b5643b61e09d6c3aeea8e"
+  },
+  "src/aios/plugins/config.py": {
+    "mtime": 1783530279.8644066,
+    "ast_hash": "50cf2fbe2f6055fe1c4dbec042055bf6",
+    "semantic_hash": "50cf2fbe2f6055fe1c4dbec042055bf6"
+  },
+  "src/aios/plugins/loader.py": {
+    "mtime": 1783586909.575426,
+    "ast_hash": "5fece7f954415a7d50c6b0cb0e2e656c",
+    "semantic_hash": "5fece7f954415a7d50c6b0cb0e2e656c"
+  },
+  "src/aios/plugins/provider_plugin.py": {
+    "mtime": 1783561413.25947,
+    "ast_hash": "9b27fc1b96abe9daee1994154017ca46",
+    "semantic_hash": "9b27fc1b96abe9daee1994154017ca46"
+  },
+  "src/aios/plugins/registry.py": {
+    "mtime": 1783586909.5782995,
+    "ast_hash": "0096ba688104e45148cc68722e193c30",
+    "semantic_hash": "0096ba688104e45148cc68722e193c30"
+  },
+  "src/aios/providers/__init__.py": {
+    "mtime": 1783402736.4408476,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/providers/base.py": {
+    "mtime": 1783528657.2480426,
+    "ast_hash": "b2e680b38612a041e51b5e4c161eed80",
+    "semantic_hash": "b2e680b38612a041e51b5e4c161eed80"
+  },
+  "src/aios/providers/catalog.json": {
+    "mtime": 1783565732.5953636,
+    "ast_hash": "b9d97b9365a4897a06674f231eeadd4f",
+    "semantic_hash": "b9d97b9365a4897a06674f231eeadd4f"
+  },
+  "src/aios/providers/catalog.py": {
+    "mtime": 1783561474.1083837,
+    "ast_hash": "6abbf2ab587f1137a147f2b432607b1d",
+    "semantic_hash": "6abbf2ab587f1137a147f2b432607b1d"
+  },
+  "src/aios/providers/gemini.py": {
+    "mtime": 1783586909.5782995,
+    "ast_hash": "c60c4d7991b808b7c432825ced5d8e7d",
+    "semantic_hash": "c60c4d7991b808b7c432825ced5d8e7d"
+  },
+  "src/aios/providers/ollama.py": {
+    "mtime": 1783586909.582859,
+    "ast_hash": "91dd54b2af62f27d86d20176d2b6d5d7",
+    "semantic_hash": "91dd54b2af62f27d86d20176d2b6d5d7"
+  },
+  "src/aios/providers/openai_compatible.py": {
+    "mtime": 1783586909.582859,
+    "ast_hash": "4900358f96aa20dcbe0c75d2633343a5",
+    "semantic_hash": "4900358f96aa20dcbe0c75d2633343a5"
+  },
+  "src/aios/providers/plugins.py": {
+    "mtime": 1783586909.575426,
+    "ast_hash": "ff85042f48167d443bf1f1a87520426d",
+    "semantic_hash": "ff85042f48167d443bf1f1a87520426d"
+  },
+  "src/aios/providers/registry.py": {
+    "mtime": 1783586909.573369,
+    "ast_hash": "787f7193fadf2588c644f8989d9580ba",
+    "semantic_hash": "787f7193fadf2588c644f8989d9580ba"
+  },
+  "src/aios/scaffold/__init__.py": {
+    "mtime": 1783559070.0837615,
+    "ast_hash": "446da678ceab5e4ed248313e19f5f5dd",
+    "semantic_hash": "446da678ceab5e4ed248313e19f5f5dd"
+  },
+  "src/aios/scaffold/engine.py": {
+    "mtime": 1783586909.5777574,
+    "ast_hash": "fee8dc03c9ba641668fca911f1a4a08a",
+    "semantic_hash": "fee8dc03c9ba641668fca911f1a4a08a"
+  },
+  "src/aios/scaffold/registry.py": {
+    "mtime": 1783559090.524678,
+    "ast_hash": "681d69e56123c28fb543dc69e64f9007",
+    "semantic_hash": "681d69e56123c28fb543dc69e64f9007"
+  },
+  "src/aios/scaffold/templates/cli-app/pyproject.toml": {
+    "mtime": 1783559167.1061497,
+    "ast_hash": "c7d5a962d52bb77038b17725dbd3a3a4",
+    "semantic_hash": "c7d5a962d52bb77038b17725dbd3a3a4"
+  },
+  "src/aios/scaffold/templates/cli-app/src/${project_name}/__init__.py": {
+    "mtime": 1783559174.010041,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/scaffold/templates/cli-app/src/${project_name}/cli.py": {
+    "mtime": 1783559182.0053563,
+    "ast_hash": "8d0d6565557477af46ba090a5d3db51f",
+    "semantic_hash": "8d0d6565557477af46ba090a5d3db51f"
+  },
+  "src/aios/scaffold/templates/cli-app/template.json": {
+    "mtime": 1783559165.694123,
+    "ast_hash": "2a5f343da0eb300b775e34ccc536a6e3",
+    "semantic_hash": "2a5f343da0eb300b775e34ccc536a6e3"
+  },
+  "src/aios/scaffold/templates/plugin/plugin.py": {
+    "mtime": 1783559191.464139,
+    "ast_hash": "9dd4de300edbad2b96f777fecf54a7fb",
+    "semantic_hash": "9dd4de300edbad2b96f777fecf54a7fb"
+  },
+  "src/aios/scaffold/templates/plugin/template.json": {
+    "mtime": 1783559189.4981377,
+    "ast_hash": "5a86e8d261c7ddcbbd7c6e969294a3ad",
+    "semantic_hash": "5a86e8d261c7ddcbbd7c6e969294a3ad"
+  },
+  "src/aios/scaffold/templates/python-package/pyproject.toml": {
+    "mtime": 1783559114.8563302,
+    "ast_hash": "a5f02d6de83febc2d9ca5afe508e477c",
+    "semantic_hash": "a5f02d6de83febc2d9ca5afe508e477c"
+  },
+  "src/aios/scaffold/templates/python-package/src/${project_name}/__init__.py": {
+    "mtime": 1783559156.835186,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/scaffold/templates/python-package/template.json": {
+    "mtime": 1783559106.9904566,
+    "ast_hash": "b0a19a60c4c93775b38388897ec50a6f",
+    "semantic_hash": "b0a19a60c4c93775b38388897ec50a6f"
+  },
+  "src/aios/scaffold/templates/python-package/tests/__init__.py": {
+    "mtime": 1783559116.1041882,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/scaffold/templates/python-package/tests/test_main.py": {
+    "mtime": 1783559116.1114407,
+    "ast_hash": "c23ab7a4e5519419939b7f3ad3efb2f5",
+    "semantic_hash": "c23ab7a4e5519419939b7f3ad3efb2f5"
+  },
+  "src/aios/templates/__init__.py": {
+    "mtime": 1783402736.5826783,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/templates/create_folder.json": {
+    "mtime": 1783402736.6202204,
+    "ast_hash": "a9205a6e6a82ce5045dd8b35474ff271",
+    "semantic_hash": "a9205a6e6a82ce5045dd8b35474ff271"
+  },
+  "src/aios/templates/git_status.json": {
+    "mtime": 1783402736.6002202,
+    "ast_hash": "e2dca54e1e04d55e6eb6f687de85794e",
+    "semantic_hash": "e2dca54e1e04d55e6eb6f687de85794e"
+  },
+  "src/aios/templates/npm_install.json": {
+    "mtime": 1783402736.6102219,
+    "ast_hash": "cee6b68431f871c08817e99339780bfa",
+    "semantic_hash": "cee6b68431f871c08817e99339780bfa"
+  },
+  "src/aios/templates/open_app.json": {
+    "mtime": 1783402736.591181,
+    "ast_hash": "724f6d6de4eed411f5d5c4833631983d",
+    "semantic_hash": "724f6d6de4eed411f5d5c4833631983d"
+  },
+  "src/aios/tools/__init__.py": {
+    "mtime": 1783402736.7226417,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/tools/base.py": {
+    "mtime": 1783423508.3367047,
+    "ast_hash": "3d801a8a8cc43dc477bd67454c79b556",
+    "semantic_hash": "3d801a8a8cc43dc477bd67454c79b556"
+  },
+  "src/aios/tools/filesystem.py": {
+    "mtime": 1783586909.5777574,
+    "ast_hash": "686724fc31e040f1eff97b3920d0c32e",
+    "semantic_hash": "686724fc31e040f1eff97b3920d0c32e"
+  },
+  "src/aios/tools/git.py": {
+    "mtime": 1783586909.5822942,
+    "ast_hash": "10faa2d0a7bfb52b9a2bee5b454f724c",
+    "semantic_hash": "10faa2d0a7bfb52b9a2bee5b454f724c"
+  },
+  "src/aios/tools/misc.py": {
+    "mtime": 1783402736.6887445,
+    "ast_hash": "d41681c61c3b19c307abcdaba17a75f1",
+    "semantic_hash": "d41681c61c3b19c307abcdaba17a75f1"
+  },
+  "src/aios/tools/openapp.py": {
+    "mtime": 1783402736.6987493,
+    "ast_hash": "692d7db9001a938ef241f87a3ca97938",
+    "semantic_hash": "692d7db9001a938ef241f87a3ca97938"
+  },
+  "src/aios/tools/registry.py": {
+    "mtime": 1783586909.5718203,
+    "ast_hash": "37e8b3c5bd697f3318ca1d9bab9d3c11",
+    "semantic_hash": "37e8b3c5bd697f3318ca1d9bab9d3c11"
+  },
+  "src/aios/tools/shell.py": {
+    "mtime": 1783491910.2476037,
+    "ast_hash": "62228b146f1bd3217f6ab69eb75f687f",
+    "semantic_hash": "62228b146f1bd3217f6ab69eb75f687f"
+  },
+  "src/aios/tools/web/__init__.py": {
+    "mtime": 1783529070.3900652,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/aios/tools/web/fetch.py": {
+    "mtime": 1783529082.8020933,
+    "ast_hash": "c0cf1172ca2068d7a93f9297ec52d934",
+    "semantic_hash": "c0cf1172ca2068d7a93f9297ec52d934"
+  },
+  "src/aios/tools/web/search.py": {
+    "mtime": 1783529075.9132137,
+    "ast_hash": "5b6f8b9328feee8796b2c7ef10a4ca2d",
+    "semantic_hash": "5b6f8b9328feee8796b2c7ef10a4ca2d"
+  },
+  "src/aios/workspace/__init__.py": {
+    "mtime": 1783491880.794974,
+    "ast_hash": "560ce11a442a870e99dbf0b7c38ac9d2",
+    "semantic_hash": "560ce11a442a870e99dbf0b7c38ac9d2"
+  },
+  "src/aios/workspace/context.py": {
+    "mtime": 1783493575.5517728,
+    "ast_hash": "3c4b4a3d9bb0899eeb98e4d8e12052e9",
+    "semantic_hash": "3c4b4a3d9bb0899eeb98e4d8e12052e9"
+  },
+  "tests/plugins/example_plugin/plugin.py": {
+    "mtime": 1783530323.1166759,
+    "ast_hash": "c325c628c997b55235da42d70c546b4a",
+    "semantic_hash": "c325c628c997b55235da42d70c546b4a"
+  },
+  "tests/plugins/example_provider/plugin.py": {
+    "mtime": 1783561575.375813,
+    "ast_hash": "c62c01716955020d92c08d204ce39fb1",
+    "semantic_hash": "c62c01716955020d92c08d204ce39fb1"
+  },
+  "tests/test_coding_agent.py": {
+    "mtime": 1783528847.910159,
+    "ast_hash": "20f5380124b2e73f9c5dba67c6802d18",
+    "semantic_hash": "20f5380124b2e73f9c5dba67c6802d18"
+  },
+  "tests/test_context.py": {
+    "mtime": 1783564858.0945983,
+    "ast_hash": "bae1b67dc9a32fc965d6f47496fa13d9",
+    "semantic_hash": "bae1b67dc9a32fc965d6f47496fa13d9"
+  },
+  "tests/test_engine_integration.py": {
+    "mtime": 1783586716.7567616,
+    "ast_hash": "af2404684c5e6776586a144c1dd5e4ec",
+    "semantic_hash": "af2404684c5e6776586a144c1dd5e4ec"
+  },
+  "tests/test_gemini.py": {
+    "mtime": 1783565825.466719,
+    "ast_hash": "66b2802133ae6a2ae8ca1b7450b7b175",
+    "semantic_hash": "66b2802133ae6a2ae8ca1b7450b7b175"
+  },
+  "tests/test_git.py": {
+    "mtime": 1783565121.7832801,
+    "ast_hash": "1e9679711e3b9c5b27f619513e8e8c0a",
+    "semantic_hash": "1e9679711e3b9c5b27f619513e8e8c0a"
+  },
+  "tests/test_hooks.py": {
+    "mtime": 1783564817.899641,
+    "ast_hash": "c0142c33569fbeb6e3d1109b08a4e75a",
+    "semantic_hash": "c0142c33569fbeb6e3d1109b08a4e75a"
+  },
+  "tests/test_permissions.py": {
+    "mtime": 1783565021.3938932,
+    "ast_hash": "f3fe0edef4d25e8698d9ec8db1e418b4",
+    "semantic_hash": "f3fe0edef4d25e8698d9ec8db1e418b4"
+  },
+  "tests/test_plugin_system.py": {
+    "mtime": 1783530421.3711953,
+    "ast_hash": "a93d91ba27ed45dc96416e5858b12d9d",
+    "semantic_hash": "a93d91ba27ed45dc96416e5858b12d9d"
+  },
+  "tests/test_provider_plugins.py": {
+    "mtime": 1783561648.8513615,
+    "ast_hash": "7ee0288aedb0dc86eb556bbb04f6a447",
+    "semantic_hash": "7ee0288aedb0dc86eb556bbb04f6a447"
+  },
+  "tests/test_providers.py": {
+    "mtime": 1783493575.553789,
+    "ast_hash": "987b6974f5fef562bae2176a5d2baea9",
+    "semantic_hash": "987b6974f5fef562bae2176a5d2baea9"
+  },
+  "tests/test_scaffold.py": {
+    "mtime": 1783559278.54663,
+    "ast_hash": "70c48cf0daa6cf48b09e631c02ec6624",
+    "semantic_hash": "70c48cf0daa6cf48b09e631c02ec6624"
+  },
+  "tests/test_settings.py": {
+    "mtime": 1783564844.4822567,
+    "ast_hash": "286ccad33b4b6592a3c3408f51254941",
+    "semantic_hash": "286ccad33b4b6592a3c3408f51254941"
+  },
+  "tests/test_slash.py": {
+    "mtime": 1783565028.7591398,
+    "ast_hash": "988571001a7dd7a5aeca789e4e7c90f7",
+    "semantic_hash": "988571001a7dd7a5aeca789e4e7c90f7"
+  },
+  "tests/test_tools.py": {
+    "mtime": 1783493575.553789,
+    "ast_hash": "493986c448ec0e203eb99652ec74fc33",
+    "semantic_hash": "493986c448ec0e203eb99652ec74fc33"
+  },
+  "README.md": {
+    "mtime": 1783402736.3963268,
+    "ast_hash": "ff510cd50c83417e61b05fff823b749f",
+    "semantic_hash": "ff510cd50c83417e61b05fff823b749f"
+  },
+  "src/aios/scaffold/templates/cli-app/README.md": {
+    "mtime": 1783559166.2098937,
+    "ast_hash": "6542a1bac0ff26d67dd42d71e7a6c8f7",
+    "semantic_hash": "6542a1bac0ff26d67dd42d71e7a6c8f7"
+  },
+  "src/aios/scaffold/templates/plugin/README.md": {
+    "mtime": 1783559189.9333467,
+    "ast_hash": "c86eb19ed09ef1d95d843ad227f9b7b6",
+    "semantic_hash": "c86eb19ed09ef1d95d843ad227f9b7b6"
+  },
+  "src/aios/scaffold/templates/python-package/README.md": {
+    "mtime": 1783559114.1825185,
+    "ast_hash": "e6dce4498fd25eb6c699db8a52a332fc",
+    "semantic_hash": "e6dce4498fd25eb6c699db8a52a332fc"
+  }
+}

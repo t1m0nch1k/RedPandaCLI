@@ -1,0 +1,76 @@
+{
+  "version": "1.0",
+  "description": "Curated MCP server catalog for aios-cli",
+  "servers": [
+    {
+      "name": "filesystem",
+      "description": "Safe file operations with path restrictions",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/"],
+      "transport": "stdio"
+    },
+    {
+      "name": "github",
+      "description": "GitHub API: manage repos, issues, PRs, and more",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "transport": "stdio"
+    },
+    {
+      "name": "git",
+      "description": "Git operations: read, search, and analyze repositories",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git"],
+      "transport": "stdio"
+    },
+    {
+      "name": "postgres",
+      "description": "Read-only PostgreSQL database access with schema inspection",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "transport": "stdio"
+    },
+    {
+      "name": "sqlite",
+      "description": "SQLite database operations and queries",
+      "command": "uvx",
+      "args": ["mcp-server-sqlite", "--db-path", "/tmp/test.db"],
+      "transport": "stdio"
+    },
+    {
+      "name": "brave-search",
+      "description": "Web search using Brave Search API",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "transport": "stdio"
+    },
+    {
+      "name": "memory",
+      "description": "Persistent knowledge graph memory",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "transport": "stdio"
+    },
+    {
+      "name": "puppeteer",
+      "description": "Browser automation and web scraping",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
+      "transport": "stdio"
+    },
+    {
+      "name": "sequential-thinking",
+      "description": "Step-by-step reasoning with thought chain visualization",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "transport": "stdio"
+    },
+    {
+      "name": "playwright",
+      "description": "Browser automation and testing",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-playwright"],
+      "transport": "stdio"
+    }
+  ]
+}

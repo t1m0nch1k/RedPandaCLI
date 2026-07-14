@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIOS CLI — AI Co-Pilot для тех, кто пишет код</title>
+  <meta name="description" content="Провайдер-агностичный AI-ассистент для терминала. Работает с 30+ LLM-провайдерами. Пишет код, управляет git, запускает команды.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Animated dot grid background -->
+  <canvas id="dot-grid" class="dot-grid-canvas"></canvas>
+
+  <!-- ──── Navbar ──── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-left">
+      <img src="img/mascot.png" alt="AIOS mascot" class="nav-mascot">
+      <span class="nav-brand-text">aios<span class="nav-brand-accent">_cli</span></span>
+    </div>
+    <div class="nav-right">
+      <a href="#features" class="nav-link">Возможности</a>
+      <a href="#how" class="nav-link">Быстрый старт</a>
+      <a href="https://github.com/anomalyco/aios-cli" target="_blank" class="nav-link">GitHub ↗</a>
+      <a href="#install" class="nav-cta">Установить</a>
+    </div>
+  </nav>
+
+  <!-- ──── Hero ──── -->
+  <section class="hero">
+    <!-- Decorative blobs -->
+    <div class="hero-blob hero-blob--1"></div>
+    <div class="hero-blob hero-blob--2"></div>
+
+    <div class="container hero-inner">
+      <div class="hero-content">
+        <div class="hero-eyebrow" data-animate="eyebrow">
+          <span class="hero-eyebrow-line"></span>
+          v0.1.0 · open source
+        </div>
+
+        <h1 class="hero-title" data-animate="title">
+          <span class="hero-title-line">
+            <span class="hero-title-word">Один CLI.</span>
+          </span>
+          <span class="hero-title-line">
+            <span class="hero-title-word">Любая <em>модель.</em></span>
+          </span>
+          <span class="hero-title-line">
+            <span class="hero-title-word">Твоя территория.</span>
+          </span>
+        </h1>
+
+        <p class="hero-desc" data-animate="desc">
+          AIOS — это AI-ассистент, который живёт в твоём терминале. Он пишет код, коммитит, запускает скрипты и ищет в вебе. Работает с Ollama, GPT, Gemini, Claude и ещё 30+ провайдерами.
+        </p>
+
+        <div class="hero-actions" data-animate="actions">
+          <a href="#install" class="btn-ember">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v10m0 0l-3.5-3.5M8 11l3.5-3.5M2 14h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Начать работу
+          </a>
+          <a href="#features" class="btn-ghost">
+            Узнать больше <span class="arrow">→</span>
+          </a>
+        </div>
+
+        <!-- Mascot under hero -->
+        <div class="hero-mascot-row" data-animate="mascot-row">
+          <img src="img/mascot.png" alt="AIOS Red Panda" class="hero-mascot-img">
+          <span class="hero-mascot-speech">Привет! Я помогу тебе кодить быстрее ✨</span>
+        </div>
+      </div>
+
+      <!-- Terminal + hero image -->
+      <div class="hero-visual" data-animate="terminal">
+        <div class="hero-image-wrapper">
+          <img src="img/hero.jpg" alt="AIOS CLI в действии" class="hero-image">
+          <div class="hero-image-fade"></div>
+        </div>
+
+        <div class="terminal">
+          <div class="terminal-glow"></div>
+          <div class="terminal-frame">
+            <div class="terminal-bar">
+              <div class="terminal-dot terminal-dot--r"></div>
+              <div class="terminal-dot terminal-dot--y"></div>
+              <div class="terminal-dot terminal-dot--g"></div>
+              <span class="terminal-bar-title">~/my-project</span>
+            </div>
+            <div class="terminal-body" id="terminal-body">
+              <!-- injected by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──── Social Proof Marquee ──── -->
+  <section class="social-proof">
+    <div class="social-proof-label">Работает с твоим провайдером</div>
+    <div class="marquee">
+      <div class="marquee-track" id="marquee-track"></div>
+    </div>
+  </section>
+
+  <!-- ──── Stats ──── -->
+  <section class="stats-section">
+    <div class="container stats-grid">
+      <div class="stat-card" data-stat>
+        <div class="stat-num" data-count="30">0</div>
+        <div class="stat-suffix">+</div>
+        <div class="stat-label">LLM-провайдеров</div>
+        <div class="stat-sub">Ollama, GPT, Gemini, Claude…</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-card" data-stat>
+        <div class="stat-num" data-count="9">0</div>
+        <div class="stat-suffix"></div>
+        <div class="stat-label">Встроенных тулов</div>
+        <div class="stat-sub">Файлы, git, shell, web…</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-card" data-stat>
+        <div class="stat-num" data-count="3">0</div>
+        <div class="stat-suffix"></div>
+        <div class="stat-label">Режима работы</div>
+        <div class="stat-sub">Chat, Code, TUI</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-card" data-stat>
+        <div class="stat-num">∞</div>
+        <div class="stat-suffix"></div>
+        <div class="stat-label">Возможностей</div>
+        <div class="stat-sub">Plugin-архитектура</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──── Features ──── -->
+  <section id="features" class="section">
+    <div class="container">
+      <div class="features-header">
+        <div class="section-label">Возможности</div>
+        <h2 class="section-heading">Не просто чат.<br><em>Второй пилот.</em></h2>
+        <p class="section-desc">Всё, что нужно разработчику — от написания кода до деплоя — прямо из командной строки.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Row 1: Big card with image + side card -->
+        <div class="f-card f-card--hero" data-feature>
+          <div class="f-card-visual">
+            <img src="img/agent-loop.jpg" alt="Agent Loop визуализация" class="f-card-img">
+          </div>
+          <div class="f-card-body">
+            <div class="f-card-icon">⚡</div>
+            <h3>Agent Loop</h3>
+            <p>Итеративный цикл: LLM думает → вызывает инструмент → получает результат → думает снова. До 10 итераций на задачу. Потоковый вывод в реальном времени.</p>
+          </div>
+        </div>
+
+        <div class="f-card f-card--side" data-feature>
+          <div class="f-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+          </div>
+          <h3>Режим кодинга</h3>
+          <p>Агент читает проект, пишет и правит файлы хирургически. Multi-edit, rename, diff, apply patch.</p>
+          <div class="f-card-code">
+            <span class="code-prompt">$</span> aios code "добавь валидацию в UserForm"
+          </div>
+        </div>
+
+        <!-- Row 2: Side + Big with visual -->
+        <div class="f-card f-card--side" data-feature>
+          <div class="f-card-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m7.08-7.08l4.24-4.24"/></svg>
+          </div>
+          <h3>Git из коробки</h3>
+          <p>Smart-commit генерирует осмысленные сообщения. Secret scanning не даст закоммитить API-ключи.</p>
+          <div class="f-card-tag-row">
+            <span class="f-card-tag">auto-commit</span>
+            <span class="f-card-tag">secret scan</span>
+            <span class="f-card-tag">branch protect</span>
+          </div>
+        </div>
+
+        <div class="f-card f-card--hero" data-feature>
+          <div class="f-card-visual">
+            <img src="img/providers.jpg" alt="Множество провайдеров" class="f-card-img">
+          </div>
+          <div class="f-card-body">
+            <div class="f-card-icon">🌐</div>
+            <h3>30+ провайдеров</h3>
+            <p>Ollama, OpenAI, Gemini, Anthropic, Groq, DeepSeek, Mistral, OpenRouter, Together AI и другие. Переключайся одной командой — без переписывания кода.</p>
+          </div>
+        </div>
+
+        <!-- Row 3: Three equal -->
+        <div class="f-card f-card--third" data-feature>
+          <div class="f-card-icon">🔒</div>
+          <h3>Permission System</h3>
+          <p>Trusted, Strict или YOLO. Три профиля для полного контроля.</p>
+        </div>
+
+        <div class="f-card f-card--third" data-feature>
+          <div class="f-card-icon">🔍</div>
+          <h3>Веб-поиск</h3>
+          <p>DuckDuckGo + парсинг страниц в markdown прямо из терминала.</p>
+        </div>
+
+        <div class="f-card f-card--third" data-feature>
+          <div class="f-card-icon">🧩</div>
+          <h3>Плагины & MCP</h3>
+          <p>Свои тулы, провайдеры, хуки. MCP-серверы из коробки.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──── Architecture Visual ──── -->
+  <section class="arch-section">
+    <div class="container">
+      <div class="arch-visual">
+        <div class="section-label" style="text-align:center">Архитектура</div>
+        <h2 class="section-heading" style="text-align:center; margin-bottom: 48px;">Модульная. <em>Расширяемая.</em></h2>
+
+        <div class="arch-diagram">
+          <!-- SVG Architecture Diagram -->
+          <svg viewBox="0 0 900 320" class="arch-svg" xmlns="http://www.w3.org/2000/svg">
+            <!-- Connection lines -->
+            <line x1="170" y1="160" x2="330" y2="100" stroke="rgba(224,90,48,0.3)" stroke-width="1.5" stroke-dasharray="6 4"/>
+            <line x1="170" y1="160" x2="330" y2="160" stroke="rgba(224,90,48,0.3)" stroke-width="1.5" stroke-dasharray="6 4"/>
+            <line x1="170" y1="160" x2="330" y2="220" stroke="rgba(224,90,48,0.3)" stroke-width="1.5" stroke-dasharray="6 4"/>
+            <line x1="510" y1="100" x2="680" y2="160" stroke="rgba(224,90,48,0.3)" stroke-width="1.5" stroke-dasharray="6 4"/>
+            <line x1="510" y1="160" x2="680" y2="160" stroke="rgba(224,90,48,0.3)" stroke-width="1.5" stroke-dasharray="6 4"/>
+            <line x1="510" y1="220" x2="680" y2="160" stroke="rgba(224,90,48,0.3)" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+            <!-- CLI Node -->
+            <g class="arch-node" data-node>
+              <rect x="60" y="120" width="220" height="80" rx="16" fill="#16161c" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+              <text x="170" y="152" text-anchor="middle" fill="#e05a30" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700">CLI LAYER</text>
+              <text x="170" y="176" text-anchor="middle" fill="#8a8691" font-family="Inter, sans-serif" font-size="11">Typer · Rich · Textual TUI</text>
+            </g>
+
+            <!-- Middle column -->
+            <g class="arch-node" data-node>
+              <rect x="330" y="60" width="180" height="80" rx="16" fill="#16161c" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+              <text x="420" y="92" text-anchor="middle" fill="#e05a30" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700">PROVIDERS</text>
+              <text x="420" y="116" text-anchor="middle" fill="#8a8691" font-family="Inter, sans-serif" font-size="11">Ollama · OpenAI · Gemini</text>
+            </g>
+
+            <g class="arch-node" data-node>
+              <rect x="330" y="160" width="180" height="0" rx="16" fill="none"/>
+              <rect x="330" y="120" width="180" height="80" rx="16" fill="#16161c" stroke="rgba(224,90,48,0.3)" stroke-width="1.5"/>
+              <text x="420" y="152" text-anchor="middle" fill="#ff8259" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700">ENGINE</text>
+              <text x="420" y="176" text-anchor="middle" fill="#8a8691" font-family="Inter, sans-serif" font-size="11">Agent Loop · Planner</text>
+            </g>
+
+            <g class="arch-node" data-node>
+              <rect x="330" y="220" width="180" height="80" rx="16" fill="#16161c" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+              <text x="420" y="252" text-anchor="middle" fill="#e05a30" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700">TOOLS</text>
+              <text x="420" y="276" text-anchor="middle" fill="#8a8691" font-family="Inter, sans-serif" font-size="11">Files · Git · Shell · Web</text>
+            </g>
+
+            <!-- Right node -->
+            <g class="arch-node" data-node>
+              <rect x="620" y="120" width="220" height="80" rx="16" fill="#16161c" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+              <text x="730" y="152" text-anchor="middle" fill="#e05a30" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700">EXTENSIONS</text>
+              <text x="730" y="176" text-anchor="middle" fill="#8a8691" font-family="Inter, sans-serif" font-size="11">Plugins · MCP · Events</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──── How it works ──── -->
+  <section id="how" class="section">
+    <div class="container">
+      <div class="how-grid">
+        <div class="how-sticky">
+          <div class="section-label">Быстрый старт</div>
+          <h2 class="section-heading">Три шага — <br><em>и ты в деле.</em></h2>
+          <p class="section-desc">Python 3.12+, один клон — и AI-ассистент готов к работе.</p>
+          <img src="img/mascot.png" alt="AIOS mascot" class="how-mascot">
+        </div>
+
+        <div class="how-steps">
+          <div class="how-step" data-step>
+            <div class="how-step-num">01</div>
+            <h4>Клонируй и установи</h4>
+            <p>Используем uv для молниеносной установки зависимостей.</p>
+            <div class="how-step-code">git clone https://github.com/anomalyco/aios-cli.git
+cd aios-cli && uv venv && uv pip install -e .</div>
+          </div>
+
+          <div class="how-step" data-step>
+            <div class="how-step-num">02</div>
+            <h4>Настрой провайдера</h4>
+            <p>Локальный Ollama, облачный GPT или Gemini — одна команда.</p>
+            <div class="how-step-code">aios doctor                           <span class="t-info"># проверка</span>
+aios config --set-provider ollama     <span class="t-info"># выбор</span></div>
+          </div>
+
+          <div class="how-step" data-step>
+            <div class="how-step-num">03</div>
+            <h4>Работай</h4>
+            <p>Чат, кодинг или полноценный TUI — выбирай свой стиль.</p>
+            <div class="how-step-code">aios ask "объясни этот код"            <span class="t-info"># quick</span>
+aios chat                              <span class="t-info"># interactive</span>
+aios code                              <span class="t-info"># coding agent</span>
+aios tui                               <span class="t-info"># full UI</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──── CTA / Install ──── -->
+  <section id="install" class="cta-section">
+    <div class="container">
+      <div class="cta-box">
+        <img src="img/mascot.png" alt="AIOS mascot" class="cta-mascot">
+        <div class="section-label">Установка</div>
+        <h2 class="cta-heading">Готов попробовать<br><em>другой подход?</em></h2>
+        <p class="cta-desc">Один CLI вместо десяти вкладок. Открытый код, никакой привязки к провайдеру.</p>
+
+        <div class="cta-install" id="cta-copy" onclick="copyInstall()">
+          <span class="cta-install-text">pip install -e .</span>
+          <span class="copy-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            скопировать
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──── Footer ──── -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <img src="img/mascot.png" alt="" class="footer-mascot">
+        <span>aios cli · v0.1.0 · open source</span>
+      </div>
+      <div class="footer-right">
+        <a href="https://github.com/anomalyco/aios-cli" target="_blank" class="footer-link">GitHub ↗</a>
+        <a href="https://opencode.ai" target="_blank" class="footer-link">opencode.ai</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

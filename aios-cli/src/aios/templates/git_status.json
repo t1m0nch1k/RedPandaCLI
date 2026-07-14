@@ -1,0 +1,1 @@
+{"name": "git_status", "tool": "git", "args_schema": {}, "fixed_args": {"args": "status"}, "description": "Show git status"}

@@ -1,0 +1,1 @@
+{"nodes": [{"id": "pkg_project_name", "label": "$project_name", "file_type": "code", "type": "package", "ecosystem": "python", "source_file": "src/aios/scaffold/templates/python-package/pyproject.toml", "source_location": "L1", "version": "0.1.0"}], "edges": []}

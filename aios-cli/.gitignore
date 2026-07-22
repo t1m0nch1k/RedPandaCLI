@@ -69,11 +69,9 @@ server_debug.log
 graphify-out/
 .graphify_analysis.json
 
-# Desktop Application (Tauri / Node)
-desktop/node_modules/
-desktop/dist/
-desktop/src-tauri/target/
-desktop/src-tauri/Cargo.lock
+# Desktop & Landing Application (Closed source)
+desktop/
+landing/
 
 # macOS
 .DS_Store

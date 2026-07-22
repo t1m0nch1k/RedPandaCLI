@@ -1,0 +1,105 @@
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo-icon {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: bold;
+  letter-spacing: -2px;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-title {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.logo-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.nav {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-item {
+  padding: 10px 20px;
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, 0.05);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.arrow-down {
+  font-size: 10px;
+}
+
+.contact-btn-wrapper {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 6px;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.contact-btn-wrapper:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.contact-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-primary);
+}
+
+.icon-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--accent-color);
+  color: #fff;
+  font-size: 14px;
+}
+
+.contact-text {
+  font-size: 14px;
+  font-weight: 500;
+  padding-right: 16px;
+}

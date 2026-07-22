@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-from pathlib import Path
 import tempfile
+from pathlib import Path
 
 import pytest
-
 from aios.scaffold.engine import ScaffoldEngine, load_template_info
 
 

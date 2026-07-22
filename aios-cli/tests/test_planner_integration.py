@@ -4,12 +4,10 @@ import json
 from pathlib import Path
 from typing import Any
 
-import pytest
-
 from aios.runtime.models import (
     Plan,
-    PlanStatus,
     PlanningContext,
+    PlanStatus,
     Step,
     ValidationRetryConfig,
 )
@@ -223,7 +221,7 @@ class TestIntegrationWorkspaceKnowledge:
         planner, calls = _make_planner(llm_response, workspace=ws)
 
         await planner.plan("test", CONTEXT)
-        prompt = calls[0][0]["content"]
+        prompt = calls[0][0].content
         assert "FastAPI" in prompt
         assert "pip" in prompt
         assert "main.py" in prompt
@@ -248,7 +246,7 @@ class TestIntegrationWorkspaceKnowledge:
         planner, calls = _make_planner(llm_response, workspace=ws)
 
         await planner.plan("test", CONTEXT)
-        prompt = calls[0][0]["content"]
+        prompt = calls[0][0].content
         assert "Django" in prompt
         assert "poetry" in prompt
         assert "app" in prompt

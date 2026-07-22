@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from aios.runtime.models import Plan, PlanningContext, ValidationResult, ValidationRetryConfig
+from aios.runtime.models import Plan, PlanningContext, ValidationResult
 
 
 class PlannerProtocol:

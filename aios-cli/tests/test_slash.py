@@ -1,21 +1,20 @@
 from __future__ import annotations
 
-import pytest
-
 from aios.cli.slash import (
-    dispatch_slash_command,
-    get_commands,
-    get_command,
-    get_categories,
-    register,
     _COMMANDS,
+    dispatch_slash_command,
+    get_categories,
+    get_command,
+    get_commands,
+    register,
 )
 
 
 def teardown_module():
     _COMMANDS.clear()
-    from aios.cli import slash as mod
     import importlib
+
+    from aios.cli import slash as mod
     importlib.reload(mod)
 
 

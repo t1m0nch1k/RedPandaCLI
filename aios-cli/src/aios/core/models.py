@@ -19,6 +19,7 @@ class Message(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     role: Role
     content: str
+    images: list[str] | None = None
     created_at: float = Field(default_factory=time.time)
     metadata: dict[str, Any] = Field(default_factory=dict)
 
@@ -29,8 +30,8 @@ class Conversation(BaseModel):
     provider: str | None = None
     model: str | None = None
 
-    def add(self, role: Role, content: str, **metadata: Any) -> Message:
-        msg = Message(role=role, content=content, metadata=metadata)
+    def add(self, role: Role, content: str, images: list[str] | None = None, **metadata: Any) -> Message:
+        msg = Message(role=role, content=content, images=images, metadata=metadata)
         self.messages.append(msg)
         return msg
 
@@ -41,6 +42,7 @@ class ToolResult(BaseModel):
     error: str = ""
     duration_ms: float = 0.0
     data: dict[str, Any] = Field(default_factory=dict)
+    image_b64: str | None = None
 
 
 class StreamChunk(BaseModel):

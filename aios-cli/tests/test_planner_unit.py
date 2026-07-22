@@ -2,16 +2,13 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
 
 import pytest
-
 from aios.runtime.models import (
     Plan,
-    PlanStatus,
     PlanningContext,
+    PlanStatus,
     Step,
-    ValidationResult,
     ValidationRetryConfig,
 )
 from aios.runtime.planner.planner import (
@@ -185,14 +182,14 @@ class TestPlannerPlan:
     async def test_plan_passes_tools_in_prompt(self) -> None:
         planner, calls = _make_planner()
         await planner.plan(GOAL, CONTEXT)
-        prompt = calls[0][0]["content"]
+        prompt = calls[0][0].content
         for tool in TOOLS:
             assert tool in prompt
 
     async def test_plan_includes_request_in_prompt(self) -> None:
         planner, calls = _make_planner()
         await planner.plan(GOAL, CONTEXT)
-        prompt = calls[0][0]["content"]
+        prompt = calls[0][0].content
         assert GOAL in prompt
 
     async def test_plan_returns_failed_on_parse_error(self) -> None:
@@ -263,7 +260,7 @@ class TestPlannerPlan:
         )
         planner, calls = _make_planner()
         plan = await planner.plan("hello", ctx)
-        prompt = calls[0][0]["content"]
+        prompt = calls[0][0].content
         assert "(none)" in prompt
         assert isinstance(plan, Plan)
 
@@ -275,7 +272,7 @@ class TestPlannerPlan:
         )
         planner, calls = _make_planner()
         await planner.plan(GOAL, ctx)
-        prompt = calls[0][0]["content"]
+        prompt = calls[0][0].content
         assert "User asked about FastAPI" in prompt
 
     async def test_plan_with_user_preferences(self) -> None:
@@ -286,13 +283,13 @@ class TestPlannerPlan:
         )
         planner, calls = _make_planner()
         await planner.plan(GOAL, ctx)
-        prompt = calls[0][0]["content"]
+        prompt = calls[0][0].content
         assert "preferred_tools" in prompt
 
     async def test_plan_without_workspace(self) -> None:
         planner, calls = _make_planner()
         await planner.plan(GOAL, CONTEXT)
-        prompt = calls[0][0]["content"]
+        prompt = calls[0][0].content
         assert "workspace knowledge unavailable" in prompt.lower()
 
 
@@ -319,7 +316,7 @@ class TestPlannerReplan:
         )
         planner, calls = _make_planner()
         await planner.replan(original, "permission denied", CONTEXT)
-        prompt = calls[0][0]["content"]
+        prompt = calls[0][0].content
         assert "permission denied" in prompt
 
     async def test_replan_retries_on_parse_error(self) -> None:

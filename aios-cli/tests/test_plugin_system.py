@@ -1,17 +1,15 @@
 from __future__ import annotations
 
-import sys
 from pathlib import Path
 
 import pytest
-
 from aios.core.models import ToolResult
-from aios.hooks.events import HookEvent, HookAction, HookContext
+from aios.hooks.events import HookAction, HookContext, HookEvent
 from aios.hooks.manager import HookManager
 from aios.plugins.base import Plugin, PluginMetadata
-from aios.plugins.registry import PluginRegistry
-from aios.plugins.loader import load_plugin_from_dir, discover_plugin_dirs
 from aios.plugins.config import PLUGINS_CONFIG_DIR, load_config, save_config
+from aios.plugins.loader import load_plugin_from_dir
+from aios.plugins.registry import PluginRegistry
 from aios.tools.base import Tool
 from aios.tools.registry import ToolRegistry
 
@@ -156,7 +154,7 @@ async def test_plugin_config():
     assert cfg["plugins"]["test-p"]["enabled"] is True
     assert cfg["plugins"]["test-p"]["setting"] == 42
 
-    from aios.plugins.config import get_plugin_config, set_plugin_config, is_plugin_enabled, set_plugin_enabled
+    from aios.plugins.config import get_plugin_config, is_plugin_enabled, set_plugin_config, set_plugin_enabled
     assert is_plugin_enabled("test-p") is True
     set_plugin_enabled("test-p", False)
     assert is_plugin_enabled("test-p") is False
@@ -166,7 +164,7 @@ async def test_plugin_config():
 
 @pytest.mark.asyncio
 async def test_catalog():
-    from aios.plugins.catalog import get_catalog_entries, find_in_catalog, get_catalog_names
+    from aios.plugins.catalog import find_in_catalog, get_catalog_entries, get_catalog_names
     entries = get_catalog_entries()
     assert len(entries) > 0
 

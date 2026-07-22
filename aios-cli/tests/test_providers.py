@@ -1,5 +1,4 @@
 import pytest
-
 from aios.config.settings import ProviderConfig, Settings
 from aios.providers.ollama import OllamaProvider
 from aios.providers.openai_compatible import OpenAICompatibleProvider

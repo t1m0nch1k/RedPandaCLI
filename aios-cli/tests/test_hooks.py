@@ -3,13 +3,11 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
-from aios.hooks.events import HookEvent, HookContext, HookAction
-from aios.hooks.manager import HookManager
-from aios.hooks.git_hooks import make_auto_commit_hook
 from aios.config.settings import GitConfig
-from aios.core.models import Conversation, Role, ToolResult
-
+from aios.core.models import ToolResult
+from aios.hooks.events import HookAction, HookContext, HookEvent
+from aios.hooks.git_hooks import make_auto_commit_hook
+from aios.hooks.manager import HookManager
 
 # ── HookEvent enum ────────────────────────────────────────────────────
 

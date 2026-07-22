@@ -6,7 +6,6 @@ from collections.abc import Awaitable, Callable
 from pathlib import Path
 from typing import Any
 
-from aios.runtime.models import ExecutionState
 from aios.config.settings import GitConfig
 from aios.context.manager import ContextManager
 from aios.core.models import Conversation, Role, StreamChunk, ToolResult
@@ -14,12 +13,13 @@ from aios.hooks.events import HookAction, HookContext, HookEvent
 from aios.hooks.git_hooks import make_auto_commit_hook
 from aios.hooks.manager import HookManager
 from aios.mcp.registry import MCPRegistry
-from aios.memory.auto import AutoMemory
-from aios.memory.project import ProjectMemory
+from aios.memory.orchestrator import MemoryOrchestrator
 from aios.permissions.base import PermissionDecision
 from aios.permissions.manager import PermissionManager
 from aios.plugins.registry import PluginRegistry
 from aios.providers.base import LLMProvider
+from aios.runtime.models import ExecutionState
+from aios.runtime.prompt_assembler.default import DefaultPromptAssembler
 from aios.tools.registry import ToolRegistry
 
 logger = logging.getLogger(__name__)
@@ -60,9 +60,9 @@ class ExecutionEngine:
         self.workspace_root = workspace_root or Path.cwd()
         self.git_config = git_config or GitConfig()
         
-        # Memory systems
-        self.project_memory = ProjectMemory(self.workspace_root)
-        self.auto_memory = AutoMemory(self.workspace_root)
+        # Memory and Prompt Assembly
+        self.memory = MemoryOrchestrator(self.workspace_root)
+        self.prompt_assembler = DefaultPromptAssembler(self.memory)
         
         # Context management
         self.context_manager = ContextManager(model_name=provider.model)
@@ -133,41 +133,25 @@ class ExecutionEngine:
         if mcp_tools:
             logger.info(f"MCP: {len(mcp_tools)} tool(s) from {len(self.mcp_registry.connected_servers)} server(s)")
 
-        # Load and inject project memory (AIOS.md and AutoMemory)
-        project_context = self.project_memory.load_context()
-        auto_context = self.auto_memory.recall()
-        
-        if project_context or auto_context:
-            memory_prompt = f"{project_context}\n\n{auto_context}".strip()
-            if not any(msg.role == Role.SYSTEM and memory_prompt in msg.content for msg in conversation.messages):
-                from aios.core.models import Message
-                conversation.messages.insert(0, Message(role=Role.SYSTEM, content=memory_prompt))
-
-        # Inject system prompt and workspace info
-        sys_info = f"[System Info]\nCurrent Workspace Root: {self.workspace_root.absolute()}"
-        
         # Inject Active Plan if it exists to focus the LLM
         plan_path = self.workspace_root / ".aios" / "plan.md"
+        plan_info = ""
         if plan_path.exists():
             plan_content = plan_path.read_text(encoding="utf-8", errors="ignore")
-            sys_info += (
+            plan_info = (
                 f"\n\n[Active Plan]\n{plan_content}\n\n"
                 "INSTRUCTIONS: You are executing a plan. Focus ONLY on completing the first unchecked task ([ ]). "
                 "Do not try to do everything at once. Once you complete the task, use `task_manager` to mark it `done`."
             )
         else:
-            sys_info += (
+            plan_info = (
                 "\n\nINSTRUCTIONS: If the user request is complex and requires multiple steps, "
                 "use the `task_manager` tool to create a detailed plan in `.aios/plan.md` "
                 "before taking any other actions."
             )
             
-        full_system_prompt = f"{self.system_prompt}\n\n{sys_info}" if self.system_prompt else sys_info
+        full_system_prompt = f"{self.system_prompt or ''}\n{plan_info}".strip()
         
-        if not any(msg.role == Role.SYSTEM and "[System Info]" in msg.content for msg in conversation.messages):
-            from aios.core.models import Message
-            conversation.messages.insert(0, Message(role=Role.SYSTEM, content=full_system_prompt))
-
         tool_defs = self._get_tool_definitions()
         
         force_sweep_next = False
@@ -176,6 +160,13 @@ class ExecutionEngine:
             # Manage context budget and apply compaction if necessary
             await self.context_manager.manage(conversation, self.provider, force_sweep=force_sweep_next)
             force_sweep_next = False
+            
+            # Rebuild assembled messages on each iteration so LLM sees tool results
+            assembled_messages = await self.prompt_assembler.assemble(
+                conversation=conversation,
+                system_prompt=full_system_prompt,
+                tools=tool_defs
+            )
             
             self._update_state(ExecutionState.THINKING)
             logger.info(f"Iteration {i + 1}/{max_iterations}. Sending request to {self.provider.name} model {self.provider.model}")
@@ -193,7 +184,7 @@ class ExecutionEngine:
             if stream_callback:
                 full_content = ""
                 async for chunk in self.provider.stream_chat(
-                    conversation.messages, tools=tool_defs
+                    assembled_messages, tools=tool_defs
                 ):
                     if chunk.type == "content":
                         full_content += chunk.content
@@ -203,7 +194,7 @@ class ExecutionEngine:
                 content = full_content if full_content else None
             else:
                 response = await self.provider.chat(
-                    conversation.messages, 
+                    assembled_messages, 
                     tools=tool_defs
                 )
                 # Post-response Hook
@@ -300,6 +291,7 @@ class ExecutionEngine:
                 conversation.add(
                     Role.TOOL, 
                     output_text, 
+                    images=[result.image_b64] if getattr(result, "image_b64", None) else None,
                     tool_call_id=tool_call.get("id"),
                     name=func_name
                 )

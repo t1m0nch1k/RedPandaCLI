@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import json
 import platform
 from typing import Any
 
@@ -15,9 +14,7 @@ from rich.table import Table
 from aios import __version__
 from aios.cli.branding import RUST, render_dashboard, render_session_id
 from aios.config.settings import add_provider_to_config, get_settings
-from aios.core.models import Conversation, Role, StreamChunk
-from aios.executor.agent import Agent
-from aios.executor.coding_agent import CodingAgent
+from aios.core.models import Conversation, Role
 from aios.memory.history import history_store
 from aios.providers.plugins import (
     PROVIDER_PLUGIN_DIR,
@@ -97,55 +94,15 @@ async def _handle_prompt(text: str, provider: str | None, model: str | None) -> 
     conversation = Conversation(provider=provider_name, model=model_name)
     conversation.add(Role.USER, text)
 
-    agent = Agent(provider_obj, _build_registry(settings), git_config=settings.git)
-    reply = await agent.run(conversation)
-    console.print(Panel(reply, title="AIOS Agent", border_style="cyan"))
-
-
-def _build_prompt_session(history_file: str):
-    from prompt_toolkit import PromptSession
-    from prompt_toolkit.application import get_app
-    from prompt_toolkit.auto_suggest import AutoSuggestFromHistory
-    from prompt_toolkit.completion import WordCompleter
-    from prompt_toolkit.filters import Condition, has_completions
-    from prompt_toolkit.history import FileHistory
-    from prompt_toolkit.key_binding import KeyBindings
-
-    from aios.cli.slash import get_available_commands
-    
-    # sentence=True ensures it matches the entire string from the start, 
-    # so `/e` matches `/exit`.
-    slash_completer = WordCompleter(get_available_commands(), ignore_case=True, sentence=True)
-    kb = KeyBindings()
-    
-    @Condition
-    def is_slash_command():
-        return get_app().current_buffer.text.startswith('/')
-    
-    @kb.add('down', filter=is_slash_command & has_completions)
-    def _(event):
-        event.current_buffer.complete_next()
-        
-    @kb.add('up', filter=is_slash_command & has_completions)
-    def _(event):
-        event.current_buffer.complete_previous()
-    
-    @kb.add('escape', 'enter')
-    def _(event):
-        event.current_buffer.insert_text('\n')
-        
-    @kb.add('enter')
-    def _(event):
-        event.current_buffer.validate_and_handle()
-        
-    return PromptSession(
-        history=FileHistory(history_file),
-        completer=slash_completer,
-        auto_suggest=AutoSuggestFromHistory(),
-        key_bindings=kb,
-        complete_while_typing=True,
-        multiline=True,
+    from aios.runtime.runtime import Runtime, RuntimeConfig
+    config = RuntimeConfig(
+        provider=provider_obj,
+        tool_registry=_build_registry(settings),
     )
+    async with Runtime(config) as runtime:
+        reply = await runtime.chat(conversation)
+        console.print(Panel(reply, title="AIOS Agent", border_style="cyan"))
+
 
 
 @app.command()
@@ -157,194 +114,6 @@ def ask(
     asyncio.run(_handle_prompt(prompt, provider, model))
 
 
-async def _run_agent_loop(
-    conversation: Conversation,
-    prompt_html: str,
-    history_file_name: str,
-    agent_factory: Callable[[Callable], Agent],
-    use_live_markdown: bool = False,
-) -> None:
-    from prompt_toolkit.formatted_text import HTML
-    from rich.live import Live
-
-    from aios.config.settings import CONFIG_DIR
-
-    session = _build_prompt_session(str(CONFIG_DIR / history_file_name))
-
-    while True:
-        try:
-            text = await session.prompt_async(HTML(prompt_html))
-        except KeyboardInterrupt:
-            continue
-        except EOFError:
-            break
-
-        if not text.strip():
-            continue
-
-        if text.strip().lower() in {"exit", "quit"}:
-            break
-
-        if text.strip().startswith("/"):
-            from aios.cli.slash import dispatch_slash_command
-            reply = await dispatch_slash_command(text)
-            if reply:
-                console.print(Panel(reply, title="AIOS System", border_style="blue"))
-            else:
-                console.print(f"[red]Unknown command: {text}[/red]")
-            continue
-
-        user_msg = conversation.add(Role.USER, text)
-        history_store.add_message(conversation.id, user_msg.id, "user", text)
-
-        tool_status = None
-
-        def on_state(state):
-            nonlocal tool_status
-            from aios.runtime.models import ExecutionState
-
-            if tool_status:
-                tool_status.stop()
-                tool_status = None
-            if state == ExecutionState.TOOL:
-                tool_status = console.status("[bold yellow]Executing tool...[/bold yellow]", spinner="bouncingBar")
-                tool_status.start()
-
-        agent = agent_factory(on_state)
-
-        async def _run_agent_with_stream(stream_callback):
-            try:
-                return await agent.run(conversation, stream_callback=stream_callback)
-            except asyncio.CancelledError:
-                return "<CANCELLED>"
-            except Exception as e:
-                console.print(f"\n[red]Error:[/red] {e}")
-                import logging
-                logging.exception("Agent run failed")
-                return None
-            finally:
-                if tool_status:
-                    tool_status.stop()
-
-        if use_live_markdown:
-            current_text = ""
-            with Live(Markdown(""), console=console, refresh_per_second=15, vertical_overflow="visible") as live:
-                async def on_stream(chunk: StreamChunk) -> None:
-                    nonlocal current_text
-                    if chunk.type == "content":
-                        current_text += chunk.content
-                        live.update(Markdown(current_text))
-
-                reply = await _run_agent_with_stream(on_stream)
-                
-                if reply == "<CANCELLED>":
-                    current_text += "\n\n> **Generation cancelled.**"
-                    live.update(Markdown(current_text))
-                    reply = ""
-                elif reply and not current_text:
-                    console.print(Markdown(reply))
-        else:
-            async def on_stream(chunk: StreamChunk) -> None:
-                if chunk.type == "content":
-                    console.print(chunk.content, end="")
-
-            reply = await _run_agent_with_stream(on_stream)
-            if reply == "<CANCELLED>":
-                console.print("\n[yellow]Generation cancelled.[/yellow]")
-                reply = ""
-            elif reply:
-                console.print()
-
-        if reply:
-            assistant_msg = conversation.add(Role.ASSISTANT, reply)
-            history_store.add_message(conversation.id, assistant_msg.id, "assistant", reply)
-
-
-@app.command()
-def chat(
-    provider: str = typer.Option(None, "--provider", "-p"),
-    model: str = typer.Option(None, "--model", "-m"),
-) -> None:
-    async def loop() -> None:
-        provider_obj, settings, provider_name, model_name = get_provider_and_model(provider, model)
-        tool_registry = _build_registry()
-        _print_dashboard(provider_name, model_name, tool_registry)
-        if not await _ensure_model_available(provider_obj, provider_name, model_name):
-            return
-        conversation = Conversation(provider=provider_name, model=model_name)
-        history_store.ensure_conversation(conversation.id, provider_name, model_name)
-
-        def agent_factory(on_state):
-            return Agent(
-                provider_obj, 
-                tool_registry, 
-                mcp_servers=_mcp_config(settings), 
-                git_config=settings.git, 
-                state_callback=on_state
-            )
-
-        await _run_agent_loop(
-            conversation=conversation,
-            prompt_html='<b>🐾 </b><style color="#d1491f"><b>> </b></style>',
-            history_file_name=".chat_history",
-            agent_factory=agent_factory,
-            use_live_markdown=True,
-        )
-
-    asyncio.run(loop())
-
-
-async def _confirm_action(tool_name: str, args: dict[str, Any]) -> bool:
-    """Callback to ask the user for confirmation before executing a dangerous action."""
-    from rich.json import JSON
-    
-    safe_args = {k: (v[:200] + "... [truncated]" if isinstance(v, str) and len(v) > 200 else v) for k, v in args.items()}
-    args_str = json.dumps(safe_args, ensure_ascii=False, indent=2)
-    
-    console.print(f"\n[bold yellow]⚠️  Action Request:[/bold yellow] {tool_name}")
-    console.print(JSON(args_str))
-    
-    choice = console.input("[bold red]Confirm execution? [Y/n]: [/bold red]")
-    return choice.strip().lower() in {"y", "", "yes"}
-
-
-@app.command()
-def code(
-    provider: str = typer.Option(None, "--provider", "-p"),
-    model: str = typer.Option(None, "--model", "-m"),
-) -> None:
-    async def loop() -> None:
-        provider_obj, settings, provider_name, model_name = get_provider_and_model(provider, model)
-        tool_registry = _build_registry(settings)
-        _print_dashboard(provider_name, model_name, tool_registry)
-        if not await _ensure_model_available(provider_obj, provider_name, model_name):
-            return
-        conversation = Conversation(provider=provider_name, model=model_name)
-        conversation.add(
-            Role.SYSTEM,
-            "You are an expert coding assistant. Answer with precise, runnable code and short explanations.",
-        )
-        history_store.ensure_conversation(conversation.id, provider_name, model_name)
-
-        def agent_factory(on_state):
-            return CodingAgent(
-                provider_obj, 
-                tool_registry, 
-                confirmation_callback=_confirm_action, 
-                state_callback=on_state,
-                mcp_servers=_mcp_config(settings), 
-                git_config=settings.git
-            )
-
-        await _run_agent_loop(
-            conversation=conversation,
-            prompt_html='<b>🐾 </b><style color="#d1491f"><b>code> </b></style>',
-            history_file_name=".code_history",
-            agent_factory=agent_factory,
-            use_live_markdown=False,
-        )
-
-    asyncio.run(loop())
 
 
 @app.command()
@@ -708,7 +477,7 @@ def main(
     logger.info(f"--- Starting AIOS CLI (provider={provider}, model={model}) ---")
     
     if verbose:
-        console.print(f"[dim]Verbose logging enabled: {log_file}[/dim]")
+        console.print(f"[dim]Verbose logging enabled: {global_log_file}[/dim]")
 
     if ctx.invoked_subcommand is None:
         from aios.cli.tui import AIOS_TUI

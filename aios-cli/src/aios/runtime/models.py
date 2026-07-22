@@ -249,6 +249,7 @@ class StepResult:
 class Intent:
     category: IntentCategory
     confidence: float = 0.0
+    reasoning: str = ""
     raw_text: str = ""
     parsed_args: dict[str, Any] = field(default_factory=dict)
 

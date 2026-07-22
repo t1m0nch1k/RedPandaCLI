@@ -3,9 +3,14 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-import pytest
-
-from aios.config.settings import Settings, ProviderConfig, GitConfig, MCPServerConfig, add_provider_to_config, _resolve_env
+from aios.config.settings import (
+    GitConfig,
+    MCPServerConfig,
+    ProviderConfig,
+    Settings,
+    _resolve_env,
+    add_provider_to_config,
+)
 
 
 class TestEnvResolution:

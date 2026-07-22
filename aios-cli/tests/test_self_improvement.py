@@ -1,8 +1,10 @@
 import asyncio
 from pathlib import Path
-from aios.runtime.runtime import Runtime, RuntimeConfig
-from aios.cli.main import get_provider_and_model, _build_registry
+
+from aios.cli.main import _build_registry, get_provider_and_model
 from aios.core.models import Conversation
+from aios.runtime.runtime import Runtime, RuntimeConfig
+
 
 async def main():
     # 1. Get the actual provider and tool registry

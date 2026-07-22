@@ -1,11 +1,9 @@
 from __future__ import annotations
 
+from collections.abc import AsyncIterator
 from pathlib import Path
 
 import pytest
-
-from collections.abc import AsyncIterator
-
 from aios.core.models import Conversation, StreamChunk
 from aios.executor.coding_agent import CodingAgent
 from aios.providers.base import LLMProvider

@@ -1,0 +1,33 @@
+{
+  "name": "aios-cli",
+  "version": "0.1.0",
+  "description": "Agentic AI Coding Assistant CLI",
+  "main": "bin/aios.js",
+  "bin": {
+    "aios": "bin/aios.js"
+  },
+  "scripts": {
+    "postinstall": "node scripts/install.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/t1m0nch1k/RedPandaCLI"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "cli",
+    "coding",
+    "assistant"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "extract-zip": "^2.0.1",
+    "tar": "^7.4.3"
+  }
+}

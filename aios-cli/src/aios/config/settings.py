@@ -222,6 +222,16 @@ class TestConfig(BaseModel):
     test_command: str = "pytest"
 
 
+class STTConfig(BaseModel):
+    model_size: str = "base"
+    language: str = "en"
+    device: str = "cpu"
+
+
+class VoiceConfig(BaseModel):
+    stt: STTConfig = STTConfig()
+
+
 class Settings(BaseModel):
     default_provider: str = "ollama"
     default_model: str = "qwen3:8b"
@@ -230,6 +240,7 @@ class Settings(BaseModel):
     mcp_servers: list[MCPServerConfig] = []
     git: GitConfig = GitConfig()
     testing: TestConfig = TestConfig()
+    voice: VoiceConfig = VoiceConfig()
 
     @classmethod
     def load(cls) -> Settings:
@@ -266,6 +277,16 @@ class Settings(BaseModel):
             auto_test=test_cfg.get("auto_test", True),
             test_command=test_cfg.get("test_command", "pytest"),
         )
+        
+        voice_cfg = raw.get("voice", {})
+        stt_cfg = voice_cfg.get("stt", {})
+        voice_config = VoiceConfig(
+            stt=STTConfig(
+                model_size=stt_cfg.get("model_size", "base"),
+                language=stt_cfg.get("language", "en"),
+                device=stt_cfg.get("device", "cpu"),
+            )
+        )
             
         return cls(
             default_provider=default_provider,
@@ -275,6 +296,7 @@ class Settings(BaseModel):
             mcp_servers=mcp_servers,
             git=git_config,
             testing=test_config,
+            voice=voice_config,
         )
 
 

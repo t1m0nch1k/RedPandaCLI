@@ -4,10 +4,8 @@ import json
 from unittest.mock import AsyncMock, patch
 
 import httpx
-import pytest
-
 from aios.core.models import Message, Role
-from aios.providers.gemini import GeminiProvider, _to_gemini_tools, _tool_result_parts, _extract_function_calls
+from aios.providers.gemini import GeminiProvider, _extract_function_calls, _to_gemini_tools, _tool_result_parts
 
 
 class TestToolResultParts:

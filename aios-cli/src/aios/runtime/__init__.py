@@ -7,7 +7,6 @@ from aios.runtime.memory_orchestrator.base import MemoryOrchestratorProtocol, Me
 from aios.runtime.mission_engine.base import MissionEngineProtocol
 from aios.runtime.models import (
     AgentState,
-    ExecutionState,
     Capability,
     CommitInfo,
     ContextStatus,
@@ -16,6 +15,7 @@ from aios.runtime.models import (
     EntryPoint,
     Event,
     ExecutionResult,
+    ExecutionState,
     FileEntry,
     FrameworkInfo,
     GitContext,

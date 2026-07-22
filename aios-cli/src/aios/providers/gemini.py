@@ -29,15 +29,22 @@ class GeminiProvider(LLMProvider):
             if msg.role == Role.TOOL:
                 parts = _tool_result_parts(msg.content)
                 if parts:
+                    if getattr(msg, "images", None):
+                        for img in msg.images:
+                            parts.append({"inlineData": {"mimeType": "image/png", "data": img}})
                     contents.append({
                         "role": "function",
                         "parts": parts
                     })
                 else:
                     name = msg.metadata.get("name", "unknown")
+                    fallback_parts = [{"functionResponse": {"name": name, "response": {"response": msg.content}}}]
+                    if getattr(msg, "images", None):
+                        for img in msg.images:
+                            fallback_parts.append({"inlineData": {"mimeType": "image/png", "data": img}})
                     contents.append({
                         "role": "function",
-                        "parts": [{"functionResponse": {"name": name, "response": {"response": msg.content}}}]
+                        "parts": fallback_parts
                     })
                 continue
             gemini_role = "model" if msg.role == Role.ASSISTANT else "user"
@@ -45,6 +52,10 @@ class GeminiProvider(LLMProvider):
             parts = []
             if msg.content:
                 parts.append({"text": msg.content})
+                
+            if getattr(msg, "images", None):
+                for img in msg.images:
+                    parts.append({"inlineData": {"mimeType": "image/png", "data": img}})
                 
             if msg.role == Role.ASSISTANT and msg.metadata.get("tool_calls"):
                 for tc in msg.metadata["tool_calls"]:

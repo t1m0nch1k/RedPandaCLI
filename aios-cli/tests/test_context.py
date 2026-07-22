@@ -2,14 +2,11 @@ from __future__ import annotations
 
 from unittest.mock import AsyncMock
 
-import pytest
-
 from aios.context.budget import TokenBudget
 from aios.context.compactor import Compactor
-from aios.context.window import ContextWindow
 from aios.context.manager import ContextManager
+from aios.context.window import ContextWindow
 from aios.core.models import Conversation, Message, Role
-
 
 # ── ContextWindow ─────────────────────────────────────────────────────
 

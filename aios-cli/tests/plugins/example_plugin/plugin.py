@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from aios.core.models import ToolResult
-from aios.hooks.events import HookEvent, HookAction, HookContext
+from aios.hooks.events import HookAction, HookContext, HookEvent
 from aios.plugins.base import Plugin, PluginMetadata
 from aios.tools.base import Tool
 
@@ -57,7 +57,6 @@ class ExamplePlugin(Plugin):
         return [HelloTool(), EchoHookTool()]
 
     def get_hooks(self) -> list[tuple[HookEvent, HookCallable]]:
-        from aios.hooks.manager import HookCallable
         return [(HookEvent.POST_TOOL, post_tool_logger)]
 
 

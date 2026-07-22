@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import pytest
-
 from aios.runtime.capability_registry.registry import CapabilityRegistry
 from aios.runtime.event_bus.base import Events
 from aios.runtime.event_bus.bus import EventBus

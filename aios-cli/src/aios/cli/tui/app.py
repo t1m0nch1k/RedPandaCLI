@@ -23,8 +23,6 @@ from aios.cli.tui.screens import (
 from aios.cli.tui.widgets import ChatMessage, CommandSuggestions, LogoWidget
 from aios.config.settings import get_settings
 from aios.core.models import Conversation, Role, StreamChunk
-from aios.executor.agent import Agent
-from aios.executor.coding_agent import CodingAgent
 from aios.memory.history import history_store
 from aios.providers.registry import build_provider
 from aios.tools.registry import ToolRegistry
@@ -105,10 +103,8 @@ class AIOS_TUI(App):
         Binding("ctrl+t", "show_tools", "Tools", key_display="Ctrl+T"),
         Binding("ctrl+h", "show_history", "History", key_display="Ctrl+H"),
         Binding("ctrl+n", "new_conversation", "New", key_display="Ctrl+N"),
-        Binding("ctrl+m", "toggle_mode", "Mode", key_display="Ctrl+M"),
         Binding("ctrl+g", "show_config", "Config", key_display="Ctrl+G"),
         Binding("ctrl+y", "toggle_yolo", "YOLO", key_display="Ctrl+Y"),
-        Binding("ctrl+p", "toggle_plan", "Plan", key_display="Ctrl+P"),
         Binding("ctrl+s", "copy_last", "Copy AI", key_display="Ctrl+S"),
         Binding("escape", "cancel_gen", "Cancel", key_display="Esc"),
     ]
@@ -126,7 +122,6 @@ class AIOS_TUI(App):
         self.tool_registry = ToolRegistry(git_config=self.settings.git)
 
         self.conversation = Conversation(provider=self.provider_name, model=self.model_name)
-        self.mode: str = "chat"
         self.agent_state: AgentState = AgentState.IDLE
         self.suggestion_index: int = 0
         self.mcp_servers: list[dict[str, Any]] = [s.model_dump() for s in self.settings.mcp_servers]
@@ -153,7 +148,7 @@ class AIOS_TUI(App):
                     )
                     yolo_tag = f" [{RUST}]YOLO[/{RUST}]" if getattr(self, "yolo_mode", False) else ""
                     yield Static(
-                        f"[{RUST}]mode: {self.mode}[/{RUST}]{yolo_tag}",
+                        f"[{RUST}]mode: auto[/{RUST}]{yolo_tag}",
                         id="dashboard_mode",
                     )
                     yield Static(
@@ -267,7 +262,7 @@ class AIOS_TUI(App):
             self._add_message("system", "Agent is already running. Press Esc to cancel.")
             return
 
-        self._active_worker = self.run_worker(self._run_agent(), exclusive=True)
+        await self._run_agent()
 
     async def _handle_slash(self, text: str) -> None:
         cmd = text.strip().split(" ", 1)[0].lower()
@@ -473,17 +468,8 @@ class AIOS_TUI(App):
         chat_area.scroll_end(animate=False)
 
         try:
-            if self.mode == "code":
-                agent = CodingAgent(
-                    self.provider_obj,
-                    self.tool_registry,
-                    confirmation_callback=self._confirm_action,
-                    state_callback=self._on_agent_state,
-                    mcp_servers=self.mcp_servers,
-                    git_config=self.git_config,
-                )
-            else:
-                agent = Agent(self.provider_obj, self.tool_registry, mcp_servers=self.mcp_servers, git_config=self.git_config)
+            user_msg_text = self.conversation.messages[-1].content if self.conversation.messages else ""
+            intent = await self.runtime.classify_intent(user_msg_text)
 
             streamed_any = False
             async def on_stream(chunk: StreamChunk) -> None:
@@ -494,16 +480,25 @@ class AIOS_TUI(App):
                     if chunk.content:
                         streamed_any = True
 
-            reply = await agent.run(self.conversation, stream_callback=on_stream)
-            
-            if not streamed_any and reply:
-                chat_msg.append_content(reply)
-                chat_area.scroll_end(animate=False)
+            from aios.runtime.models import IntentCategory
+            if intent.category == IntentCategory.MISSION:
+                self._add_message("system", "🚀 Autonomous mission started...")
+                async for event in self.runtime.run_mission(user_msg_text, self.conversation):
+                    content = getattr(event, "content", "") or getattr(event, "type", "")
+                    if content:
+                        chat_msg.append_content(f"[{event.type}] {content}\n")
+                        chat_area.scroll_end(animate=False)
+            else:
+                reply = await self.runtime.chat(self.conversation, stream_callback=on_stream)
+                
+                if not streamed_any and reply:
+                    chat_msg.append_content(reply)
+                    chat_area.scroll_end(animate=False)
 
-            assistant_msgs = [m for m in self.conversation.messages if m.role == Role.ASSISTANT]
-            if assistant_msgs:
-                last = assistant_msgs[-1]
-                history_store.add_message(self.conversation.id, last.id, "assistant", reply)
+                assistant_msgs = [m for m in self.conversation.messages if m.role == Role.ASSISTANT]
+                if assistant_msgs:
+                    last = assistant_msgs[-1]
+                    history_store.add_message(self.conversation.id, last.id, "assistant", reply)
 
             self._update_dashboard_stats()
             self.agent_state = AgentState.DONE
@@ -535,6 +530,10 @@ class AIOS_TUI(App):
     def _rebuild_provider(self) -> None:
         try:
             self.provider_obj = build_provider(self.provider_name, self.model_name, self.settings)
+            
+            # Rebuild runtime if it exists
+            if hasattr(self, "runtime"):
+                self.runtime._config.provider = self.provider_obj
         except ValueError as e:
             self._add_message("system", f"Error switching: {e}")
 
@@ -591,18 +590,6 @@ class AIOS_TUI(App):
         self._clear_chat()
         self.notify("New conversation started")
 
-    def action_toggle_mode(self) -> None:
-        self.mode = "code" if self.mode == "chat" else "chat"
-        label = "Coding Mode" if self.mode == "code" else "Chat Mode"
-        desc = (
-            "I can read/write files and run commands."
-            if self.mode == "code"
-            else "General conversation."
-        )
-        self._add_message("system", f"Switched to [bold]{label}[/bold] \u2014 {desc}")
-        self._update_dashboard_mode()
-        self.notify(f"Mode: {label}")
-
     def action_toggle_yolo(self) -> None:
         self.yolo_mode = not getattr(self, "yolo_mode", False)
         status = "ENABLED" if self.yolo_mode else "DISABLED"
@@ -610,12 +597,6 @@ class AIOS_TUI(App):
         self._update_dashboard_mode()
         self.notify(f"YOLO Mode: {status}")
 
-    def action_toggle_plan(self) -> None:
-        self.mode = "plan" if self.mode != "plan" else "chat"
-        label = "Plan Mode" if self.mode == "plan" else "Chat Mode"
-        self._add_message("system", f"Switched to [bold]{label}[/bold].")
-        self._update_dashboard_mode()
-        self.notify(f"Mode: {label}")
 
     def action_copy_last(self) -> None:
         ai_msgs = [m for m in self.conversation.messages if m.role.value == "assistant"]
@@ -641,7 +622,7 @@ class AIOS_TUI(App):
         try:
             yolo_tag = f" [{RUST}]YOLO[/{RUST}]" if getattr(self, "yolo_mode", False) else ""
             self.query_one("#dashboard_mode", Static).update(
-                f"[{RUST}]mode: {self.mode}[/{RUST}]{yolo_tag}"
+                f"[{RUST}]mode: auto[/{RUST}]{yolo_tag}"
             )
         except Exception:
             pass
@@ -660,6 +641,24 @@ class AIOS_TUI(App):
 
     # ── Lifecycle ───────────────────────────────────────────────────
 
-    def on_mount(self) -> None:
+    async def on_mount(self) -> None:
         self.title = "AIOS CLI"
         self.sub_title = f"v{__version__}"
+
+        from aios.executor.coding_agent import CODING_SYSTEM_PROMPT
+        from aios.runtime.runtime import Runtime, RuntimeConfig
+        config = RuntimeConfig(
+            provider=self.provider_obj,
+            tool_registry=self.tool_registry,
+            mcp_enabled=bool(self.mcp_servers),
+            state_callback=self._on_agent_state,
+            confirmation_callback=self._confirm_action,
+            system_prompt=CODING_SYSTEM_PROMPT,
+        )
+        self.runtime = Runtime(config)
+        await self.runtime.__aenter__()
+
+    async def on_unmount(self) -> None:
+        if hasattr(self, "runtime"):
+            await self.runtime.__aexit__(None, None, None)
+

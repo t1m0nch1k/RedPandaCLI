@@ -51,7 +51,7 @@ class Compactor:
         Intelligently evicts context by summarizing successful tool outputs (e.g. multi_edit, replace_text)
         that don't need to be fully kept in context, while preserving the tool call and basic success notification.
         """
-        from aios.core.models import Role, Message
+        from aios.core.models import Role
         
         new_messages = []
         for msg in messages:

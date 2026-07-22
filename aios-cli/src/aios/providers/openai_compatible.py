@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from collections.abc import AsyncIterator
 from typing import Any
+
 import httpx
 
 from aios.core.models import Message, Role, StreamChunk
@@ -22,6 +23,16 @@ class OpenAICompatibleProvider(LLMProvider):
         msgs_payload = []
         for m in messages:
             msg_dict = {"role": m.role.value, "content": m.content}
+            if getattr(m, "images", None):
+                content_parts = []
+                if m.content:
+                    content_parts.append({"type": "text", "text": m.content})
+                for img in m.images:
+                    content_parts.append({
+                        "type": "image_url",
+                        "image_url": {"url": f"data:image/png;base64,{img}"}
+                    })
+                msg_dict["content"] = content_parts
             if m.role == Role.ASSISTANT and m.metadata.get("tool_calls"):
                 msg_dict["tool_calls"] = m.metadata["tool_calls"]
             if m.role == Role.TOOL:
@@ -69,6 +80,7 @@ class OpenAICompatibleProvider(LLMProvider):
 
     async def _make_request_with_retry(self, client: httpx.AsyncClient, method: str, url: str, **kwargs) -> httpx.Response:
         import asyncio
+
         import httpx
         
         max_retries = 10

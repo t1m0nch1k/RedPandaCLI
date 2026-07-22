@@ -4,8 +4,7 @@ from collections.abc import AsyncIterator
 from pathlib import Path
 
 import pytest
-
-from aios.config.settings import GitConfig, ProviderConfig, Settings
+from aios.config.settings import GitConfig
 from aios.core.models import Conversation, Role, StreamChunk, ToolResult
 from aios.executor.engine import ExecutionEngine
 from aios.permissions.base import PermissionDecision
@@ -13,7 +12,6 @@ from aios.permissions.manager import PermissionManager
 from aios.permissions.policy import PermissionPolicy
 from aios.permissions.rules import PermissionRule
 from aios.providers.base import LLMProvider
-from aios.providers.registry import build_provider, register_provider
 from aios.tools.base import Tool
 from aios.tools.registry import ToolRegistry
 from aios.workspace import WorkspaceContext
@@ -63,8 +61,10 @@ class MockProvider(LLMProvider):
         super().__init__(base_url="http://mock", api_key="", model="mock-model")
         self.responses = responses
         self.current = 0
+        self.last_messages = []
 
     async def chat(self, messages, tools=None, **kwargs):
+        self.last_messages = messages
         if self.current < len(self.responses):
             r = self.responses[self.current]
             self.current += 1
@@ -241,7 +241,7 @@ class TestEngineIntegration:
 
     @pytest.mark.asyncio
     async def test_hook_blocks_execution(self, tmp_path: Path):
-        from aios.hooks.events import HookEvent, HookContext, HookAction
+        from aios.hooks.events import HookAction, HookEvent
 
         provider = MockProvider([
             {"content": "This should be blocked", "tool_calls": []},
@@ -335,7 +335,7 @@ class TestEngineIntegration:
         conv.add(Role.USER, "hi")
         result = await engine.run(conv, max_iterations=5)
         assert "with system prompt" in result
-        sys_msgs = [m for m in conv.messages if m.role == Role.SYSTEM]
+        sys_msgs = [m for m in provider.last_messages if m.role == Role.SYSTEM]
         assert any("helpful bot" in m.content for m in sys_msgs)
 
     @pytest.mark.asyncio

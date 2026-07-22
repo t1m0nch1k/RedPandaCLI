@@ -3,14 +3,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import pytest
-
 from aios.permissions.base import PermissionDecision
 from aios.permissions.manager import PermissionManager
 from aios.permissions.policy import PermissionPolicy
-from aios.permissions.profiles import get_trusted_policy, get_strict_policy, get_yolo_policy
+from aios.permissions.profiles import get_strict_policy, get_trusted_policy
 from aios.permissions.rules import PermissionRule
-
 
 # ── PermissionDecision enum ───────────────────────────────────────────
 
@@ -159,7 +156,6 @@ class TestPermissionManager:
 
     def test_load_always_allow_from_file(self, tmp_path: Path):
         from aios.permissions.manager import PERMISSIONS_FILE
-        from aios.config.settings import CONFIG_DIR
 
         mgr_tmp = PermissionManager(policy=PermissionPolicy("test", rules=[]))
         expected_hash = mgr_tmp._generate_call_hash("shell", {"command": "ls"})

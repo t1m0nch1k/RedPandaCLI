@@ -4,7 +4,6 @@ import asyncio
 from pathlib import Path
 
 import pytest
-
 from aios.runtime.event_bus.base import Events
 from aios.runtime.event_bus.bus import EventBus
 from aios.runtime.models import AgentState, Event
@@ -330,16 +329,13 @@ class TestRuntime:
         runtime = Runtime(RuntimeConfig())
         unimplemented = [
             "tool_executor",
-            "permission_gate",
-            "provider_router",
             "workspace_knowledge",
-            "mission_engine",
             "intent_engine",
             "memory_orchestrator",
             "prompt_assembler",
         ]
         for name in unimplemented:
-            with pytest.raises(NotImplementedError):
+            with pytest.raises(RuntimeError):
                 getattr(runtime, name)
                 
         requires_provider = [
@@ -355,9 +351,9 @@ class TestRuntime:
         runtime = Runtime(RuntimeConfig())
         with pytest.raises(RuntimeError):
             await runtime.chat(None)
-        with pytest.raises(NotImplementedError):
+        with pytest.raises(RuntimeError):
             await runtime.execute_plan(None, None)
-        with pytest.raises(NotImplementedError):
+        with pytest.raises(RuntimeError):
             await runtime.classify_intent("test")
         assert hasattr(runtime, "run_mission")
         assert callable(runtime.run_mission)

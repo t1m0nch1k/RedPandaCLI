@@ -1,14 +1,10 @@
 from __future__ import annotations
 
-import json
 import re
 from pathlib import Path
 
-import pytest
-
 from aios.config.settings import GitConfig
-from aios.core.models import ToolResult
-from aios.tools.git import GitTool, _check_secrets, _run_git, PROTECTED_BRANCHES, SECRET_PATTERNS
+from aios.tools.git import SECRET_PATTERNS, GitTool, _check_secrets, _run_git
 from aios.workspace import WorkspaceContext
 
 

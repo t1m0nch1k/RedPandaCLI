@@ -1,7 +1,7 @@
-import pytest
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock
 
 from aios.runtime.runtime import Runtime, RuntimeConfig
+
 
 class TestRuntimeMission:
     async def test_run_mission_delegates_to_planner_and_executor(self):
@@ -17,6 +17,8 @@ class TestRuntimeMission:
         mock_planner.replan = AsyncMock(return_value=None)
         
         mock_executor = AsyncMock()
+        mock_executor.tool_registry = MagicMock()
+        mock_executor.tool_registry.list.return_value = []
         # Mock executor to return a final state indicating completion on the first run
         from aios.runtime.models import AgentState
         mock_executor.run = AsyncMock(return_value=AgentState.COMPLETED)
@@ -27,9 +29,17 @@ class TestRuntimeMission:
         runtime._executor = mock_executor
         runtime._context_manager = mock_context
         runtime._initialized = True
+        
+        from aios.runtime.mission_engine.engine import MissionEngine
+        runtime._mission_engine = MissionEngine(
+            planner=mock_planner,
+            executor=mock_executor,
+            context_manager=mock_context,
+            event_bus=runtime.event_bus,
+            max_iterations_per_step=10,
+        )
 
         # Run mission
-        from unittest.mock import MagicMock
         mock_conversation = MagicMock()
 
         events = []

@@ -59,6 +59,13 @@ class Runtime:
         self._context_manager = None
         self._planner = None
         self._executor = None
+        self._permission_gate = None
+        self._provider_router = None
+        self._mission_engine = None
+        self._workspace_knowledge = None
+        self._memory_orchestrator = None
+        self._prompt_assembler = None
+        self._intent_engine = None
         
         if self._config.provider:
             from aios.context.manager import ContextManager
@@ -74,9 +81,9 @@ class Runtime:
             
         if self._config.provider and self._config.tool_registry:
             from aios.executor.engine import ExecutionEngine
-            from aios.permissions.manager import PermissionManager
-            from aios.permissions.profiles import get_trusted_policy, get_strict_policy, get_yolo_policy_fixed
             from aios.hooks.manager import HookManager
+            from aios.permissions.manager import PermissionManager
+            from aios.permissions.profiles import get_strict_policy, get_trusted_policy, get_yolo_policy_fixed
             
             policy = get_trusted_policy()
             if self._config.permission_profile == "strict":
@@ -95,6 +102,64 @@ class Runtime:
                 state_callback=self._config.state_callback,
                 mcp_servers=[] if not self._config.mcp_enabled else None,
             )
+
+            from aios.runtime.permission_gate.gate import PermissionGate
+            self._permission_gate = PermissionGate(event_bus=self._event_bus)
+            if self._config.confirmation_callback:
+                self._permission_gate.set_confirmation_callback(self._config.confirmation_callback)
+
+            from aios.runtime.capability_registry.registry import CapabilityRegistry
+            from aios.runtime.provider_health.health import ProviderHealth
+            from aios.runtime.provider_metrics.metrics import ProviderMetrics
+            from aios.runtime.provider_router.router import ProviderRouter
+
+            self._provider_router = ProviderRouter(
+                capability_registry=CapabilityRegistry(),
+                provider_health=ProviderHealth(event_bus=self._event_bus),
+                provider_metrics=ProviderMetrics(event_bus=self._event_bus),
+                event_bus=self._event_bus,
+            )
+
+            from aios.runtime.workspace_knowledge.engine import WorkspaceKnowledgeEngine
+            from aios.tools.workspace_search import WorkspaceSearchTool
+            
+            self._workspace_knowledge = WorkspaceKnowledgeEngine(self._config.workspace_root or Path.cwd())
+            self._config.tool_registry.register(WorkspaceSearchTool(self._workspace_knowledge))
+            
+            from aios.memory.orchestrator import MemoryOrchestrator
+            from aios.runtime.prompt_assembler.default import DefaultPromptAssembler
+            
+            self._memory_orchestrator = MemoryOrchestrator(self._config.workspace_root)
+            self._prompt_assembler = DefaultPromptAssembler(self._memory_orchestrator)
+            
+            from aios.tools.memory_tool import MemoryTool
+            self._config.tool_registry.register(MemoryTool(self._memory_orchestrator.long_term))
+
+            from aios.calendar.engine import CalendarEngine
+            from aios.tools.calendar_tool import CalendarTool
+            
+            calendar_db_path = Path.home() / ".aios" / "calendar.db"
+            self._calendar_engine = CalendarEngine(calendar_db_path)
+            self._config.tool_registry.register(CalendarTool(self._calendar_engine))
+
+            from aios.timer.engine import TimerEngine
+            from aios.tools.timer_tool import TimerTool
+            
+            self._timer_engine = TimerEngine()
+            self._config.tool_registry.register(TimerTool(self._timer_engine))
+
+            from aios.runtime.mission_engine.engine import MissionEngine
+            self._mission_engine = MissionEngine(
+                planner=self._planner,
+                executor=self._executor,
+                context_manager=self._context_manager,
+                event_bus=self._event_bus,
+                max_iterations_per_step=self._config.max_iterations,
+            )
+            
+            from aios.runtime.intent_engine.engine import IntentEngine
+            self._intent_engine = IntentEngine(llm_chat=self._config.provider.complete)
+
             # Share the context manager
             if self._context_manager:
                 self._executor.context_manager = self._context_manager
@@ -149,11 +214,13 @@ class Runtime:
 
     @property
     def tool_executor(self) -> Any:
-        raise NotImplementedError("ToolExecutor not yet implemented — see Phase 3")
+        raise RuntimeError("ToolExecutor is not available in this release")
 
     @property
     def permission_gate(self) -> Any:
-        raise NotImplementedError("PermissionGate not yet implemented — see Phase 2")
+        if not self._permission_gate:
+            raise RuntimeError("PermissionGate not initialized")
+        return self._permission_gate
 
     @property
     def context_manager(self) -> Any:
@@ -163,27 +230,39 @@ class Runtime:
 
     @property
     def provider_router(self) -> Any:
-        raise NotImplementedError("ProviderRouter not yet implemented — see Phase 2")
+        if not self._provider_router:
+            raise RuntimeError("ProviderRouter not initialized")
+        return self._provider_router
 
     @property
     def workspace_knowledge(self) -> Any:
-        raise NotImplementedError("WorkspaceKnowledge not yet implemented — see Phase 8")
+        if not self._workspace_knowledge:
+            raise RuntimeError("WorkspaceKnowledge not initialized")
+        return self._workspace_knowledge
 
     @property
     def mission_engine(self) -> Any:
-        raise NotImplementedError("MissionEngine not yet implemented — see Phase 9")
+        if not self._mission_engine:
+            raise RuntimeError("MissionEngine not initialized")
+        return self._mission_engine
 
     @property
     def intent_engine(self) -> Any:
-        raise NotImplementedError("IntentEngine not yet implemented — see Phase 7")
+        if not self._intent_engine:
+            raise RuntimeError("IntentEngine not initialized")
+        return self._intent_engine
 
     @property
     def memory_orchestrator(self) -> Any:
-        raise NotImplementedError("MemoryOrchestrator not yet implemented — see Phase 4")
+        if not self._memory_orchestrator:
+            raise RuntimeError("MemoryOrchestrator not initialized")
+        return self._memory_orchestrator
 
     @property
     def prompt_assembler(self) -> Any:
-        raise NotImplementedError("PromptAssembler not yet implemented — see Phase 4")
+        if not self._prompt_assembler:
+            raise RuntimeError("PromptAssembler not initialized")
+        return self._prompt_assembler
 
     # ── High-level operations ──────────────────────────────────────────
 
@@ -211,7 +290,7 @@ class Runtime:
         stream_callback: Any | None = None,
     ) -> ExecutionResult:
         """Execute a pre-defined Plan. Used after Planner.plan() + user review."""
-        raise NotImplementedError("execute_plan() requires MissionEngine — see Phase 9")
+        raise RuntimeError("execute_plan is not available in this release")
 
     async def run_mission(
         self,
@@ -219,54 +298,18 @@ class Runtime:
         conversation: Any,
     ) -> AsyncIterator[Any]:
         """Decompose goal into a plan, execute each step. Yields progress events."""
-        from aios.runtime.models import PlanningContext, PlanStatus
-        from aios.core.models import Role
+        if not self._mission_engine:
+            raise RuntimeError("MissionEngine not initialized")
         
-        if not self._planner or not self._executor:
-            raise RuntimeError("Planner and Executor required for run_mission")
-            
-        context = PlanningContext(
-            workspace_root=self._config.workspace_root or Path.cwd(),
-            available_tools=[t.name for t in self._config.tool_registry.list()],
-            conversation_history="",  # Ideally serialize the conversation here
-        )
-        
-        yield {"event": "planning", "goal": goal}
-        
-        # 1. Plan
-        plan = await self._planner.plan(goal, context)
-        if plan.status == PlanStatus.FAILED:
-            yield {"event": "error", "message": "Planning failed."}
-            return
-            
-        yield {"event": "plan_created", "plan": plan}
-        
-        # 2. Execute
-        for step in plan.steps:
-            yield {"event": "step_started", "step": step}
-            
-            # Focus the LLM on this specific step
-            step_instruction = (
-                f"Execute the following step: {step.description}\n"
-                f"Expected outcome: {step.expected_outcome}\n"
-                f"Target tool: {step.tool_name or 'LLM only'}\n"
-                f"Please focus only on this step. When done, output a final answer summarizing the result."
-            )
-            conversation.add(Role.USER, step_instruction)
-            
-            # Execute
-            result = await self._executor.run(
-                conversation=conversation, 
-                max_iterations=self._config.max_iterations
-            )
-            
-            yield {"event": "step_completed", "step": step, "result": result}
-            
-        yield {"event": "mission_completed", "plan": plan}
+        mission = await self._mission_engine.create_mission(goal, conversation)
+        async for event in self._mission_engine.execute_mission(mission):
+            yield event
 
     async def classify_intent(self, text: str) -> Intent:
         """Classify user input into an intent category."""
-        raise NotImplementedError("classify_intent() requires IntentEngine — see Phase 7")
+        if not self._intent_engine:
+            raise RuntimeError("IntentEngine not initialized")
+        return await self._intent_engine.classify_intent(text)
 
     # ── Internal helpers ───────────────────────────────────────────────
 

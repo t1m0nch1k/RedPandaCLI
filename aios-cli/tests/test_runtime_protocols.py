@@ -4,8 +4,6 @@ from pathlib import Path
 
 from aios.runtime import (
     AgentState,
-    CompactionStrategy,
-    ExecutionState,
     Capability,
     CommitInfo,
     ContextManagerProtocol,
@@ -17,6 +15,7 @@ from aios.runtime import (
     EventBusProtocol,
     Events,
     ExecutionResult,
+    ExecutionState,
     ExecutorProtocol,
     FileEntry,
     FrameworkInfo,
@@ -39,7 +38,6 @@ from aios.runtime import (
     PermissionGateProtocol,
     Plan,
     PlannerProtocol,
-    Planner,
     PlanningContext,
     PlanStatus,
     PromptAssemblerProtocol,

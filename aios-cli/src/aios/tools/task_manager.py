@@ -66,7 +66,7 @@ class TaskManagerTool(Tool):
         elif action == "read":
             if not os.path.exists(full_path):
                 return ToolResult(success=False, error=f"Plan file not found: {path}")
-            with open(full_path, "r", encoding="utf-8") as f:
+            with open(full_path, encoding="utf-8") as f:
                 return ToolResult(success=True, output=f.read())
 
         elif action == "update_status":
@@ -80,7 +80,7 @@ class TaskManagerTool(Tool):
             if not os.path.exists(full_path):
                 return ToolResult(success=False, error=f"Plan file not found: {path}")
 
-            with open(full_path, "r", encoding="utf-8") as f:
+            with open(full_path, encoding="utf-8") as f:
                 lines = f.readlines()
 
             updated = False

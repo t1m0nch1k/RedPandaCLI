@@ -1,0 +1,16 @@
+{
+  "name": "aios-overlay",
+  "type": "Overlay",
+  "version": "0.1.0",
+  "description": "Фоновый демон глобальных хоткеев и компактного оверлея (PySide6). Отдельный процесс, запускается Tauri-шеллом или вручную: python -m aios_overlay.",
+  "entrypoint": "aios_overlay.__main__:main",
+  "endpoints": {},
+  "required_models": [],
+  "config_defaults": {
+    "hotkeys": {
+      "main_window": "ctrl+alt+space",
+      "overlay": "alt+space"
+    }
+  },
+  "note": "Дескриптивный файл (модульная схема modules/* не парсится ядром). Демон — отдельный процесс, общается с ядром по ws://127.0.0.1:8765 как обычный IPC-клиент."
+}

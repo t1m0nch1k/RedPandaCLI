@@ -2,12 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
 from aios.plugins.provider_plugin import ProviderPlugin
 from aios.providers.plugins import (
     _find_provider_plugin_class,
-    discover_all_provider_plugins,
     load_provider_plugin_from_dir,
 )
 from aios.providers.registry import (

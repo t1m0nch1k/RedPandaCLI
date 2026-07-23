@@ -1,0 +1,21 @@
+@import './tokens.css';
+
+/* Global utilities if needed */
+.split-line {
+  overflow: hidden;
+}
+
+/* Glassmorphism helpers for Desktop */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Cyberbrutalism helpers for CLI */
+.cyber-panel {
+  border: 1px solid var(--accent-color);
+  background: transparent;
+  padding: 2rem;
+}

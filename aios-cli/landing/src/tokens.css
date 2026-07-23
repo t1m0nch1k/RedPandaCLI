@@ -1,0 +1,243 @@
+/* 
+ * Design System 2026 Tokens & Utility Classes
+ * Strictly adhering to 2026 Design Guidelines:
+ * - Complex dark palette (#0b0d13 base, #121520 alt)
+ * - Typographic discipline: Anton (Display Caps) + Space Mono
+ * - Single accent color per page (#cef563 CLI Acid, #422EFF Desktop Electric)
+ * - Zero emoji cards, zero standard grey shadows, zero generic Inter
+ */
+
+:root {
+  /* Dark Colors (Warm & Deep) */
+  --bg-color: #0b0d13;
+  --bg-color-alt: #121520;
+  --bg-surface: rgba(255, 255, 255, 0.03);
+  --bg-glass: rgba(18, 21, 32, 0.65);
+  
+  --text-color: #f4f5f8;
+  --text-muted: #888d9b;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(255, 255, 255, 0.2);
+  
+  /* Single Accent Default (Overridden per page route) */
+  --accent-color: #422eff;
+  --accent-glow: rgba(66, 46, 255, 0.25);
+  --accent-subtle: rgba(66, 46, 255, 0.1);
+
+  /* Typography */
+  --font-display: 'Anton', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  /* Layout Spacing (Fluid Clamp) */
+  --sp: clamp(3.5rem, 8vw, 7.5rem);
+  --gap: clamp(1rem, 2.5vw, 2.5rem);
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --radius-lg: 28px;
+
+  /* Shadows (Tinted Shadow Rule) */
+  --shadow-card: 0 20px 50px rgba(0, 0, 0, 0.4);
+  --shadow-accent: 0 16px 40px -10px var(--accent-glow);
+}
+
+/* Page Reset & Core Typography */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-mono);
+  font-size: clamp(14px, 0.9vw + 0.5rem, 16px);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--accent-color);
+  color: #0b0d13;
+}
+
+/* Headings with 2026 Display Rules */
+h1, h2, h3, h4, .display-caps {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-weight: 400;
+  margin: 0;
+  color: var(--text-color);
+  letter-spacing: -0.03em;
+}
+
+h1 {
+  font-size: clamp(3.8rem, 11vw, 13rem);
+  line-height: 0.85;
+}
+
+h2 {
+  font-size: clamp(2.4rem, 6vw, 6.5rem);
+  line-height: 0.88;
+}
+
+h3 {
+  font-size: clamp(1.4rem, 3vw, 2.8rem);
+  line-height: 0.95;
+}
+
+p {
+  color: var(--text-muted);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* Glassmorphism & Liquid Glass Components */
+.glass-panel {
+  background: var(--bg-glass);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.glass-panel:hover {
+  border-color: var(--border-active);
+}
+
+/* Cyberbrutalism CLI Panel */
+.cyber-panel {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--accent-color);
+  box-shadow: 4px 4px 0px var(--accent-color);
+  padding: 1rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 4px;
+}
+
+/* Fluid Layout Utilities (Zero Media Queries) */
+.container {
+  width: min(1360px, 100% - 2.5rem);
+  margin-inline: auto;
+}
+
+.section {
+  padding-block: var(--sp);
+}
+
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: var(--gap);
+}
+
+.flex-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+}
+
+.flex-row > * {
+  flex: 1 1 280px;
+}
+
+/* Tag / Badge */
+.tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 100px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-color);
+}
+
+.tag-badge .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent-color);
+}
+
+/* Button styles */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.1rem 2.5rem;
+  background-color: var(--accent-color);
+  color: #0b0d13;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-sm);
+  border: none;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-accent);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.1rem 2.5rem;
+  background-color: transparent;
+  color: var(--text-color);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--text-color);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

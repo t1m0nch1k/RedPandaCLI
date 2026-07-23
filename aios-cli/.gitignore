@@ -69,9 +69,8 @@ server_debug.log
 graphify-out/
 .graphify_analysis.json
 
-# Desktop & Landing Application (Closed source)
+# Desktop Application (Closed source)
 desktop/
-landing/
 
 # macOS
 .DS_Store

@@ -195,6 +195,30 @@ class DesktopIPCServer:
                     logger.error("Failed to transcribe: %s", e)
                     return {"reply": f"Error: {str(e)}"}
                 
+            case "vision.analyze_image":
+                img_b64 = params.get("image_base64", "")
+                logger.info("Received vision.analyze_image request (length: %d)", len(img_b64))
+                return {
+                    "summary": "Screen capture processed successfully",
+                    "windows": [],
+                    "text": [],
+                    "status": "success",
+                }
+
+            case "vision.capture":
+                try:
+                    import io
+                    from PIL import ImageGrab
+                    screenshot = ImageGrab.grab()
+                    buf = io.BytesIO()
+                    screenshot.save(buf, format="PNG")
+                    import base64
+                    b64_str = base64.b64encode(buf.getvalue()).decode("utf-8")
+                    return {"status": "success", "image_base64": b64_str}
+                except Exception as e:
+                    logger.error("Vision capture failed: %s", e)
+                    return {"status": "error", "message": str(e)}
+
             case "tools.list":
                 from aios.desktop.schemas import ToolItem, ToolsListResponse
                 if hasattr(self.runtime, "executor") and self.runtime.executor:

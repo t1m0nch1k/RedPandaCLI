@@ -228,8 +228,15 @@ class STTConfig(BaseModel):
     device: str = "cpu"
 
 
+class WakeWordConfig(BaseModel):
+    enabled: bool = False  # Disabled by default for privacy!
+    keyword: str = "hey_aios"
+    threshold: float = 0.5
+
+
 class VoiceConfig(BaseModel):
     stt: STTConfig = STTConfig()
+    wake_word: WakeWordConfig = WakeWordConfig()
 
 
 class Settings(BaseModel):

@@ -16,9 +16,15 @@ class LongTermMemory:
         self.db_path = db_path
         self._init_db()
 
+    def _get_connection(self) -> sqlite3.Connection:
+        conn = sqlite3.connect(self.db_path, timeout=10.0)
+        conn.execute("PRAGMA journal_mode=WAL;")
+        conn.execute("PRAGMA busy_timeout=10000;")
+        return conn
+
     def _init_db(self) -> None:
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
-        with sqlite3.connect(self.db_path) as conn:
+        with self._get_connection() as conn:
             cursor = conn.cursor()
             
             # Create main table
@@ -78,7 +84,7 @@ class LongTermMemory:
     def store(self, content: str, category: str = "fact", importance: int = 5, tags: list[str] | None = None) -> int:
         """Stores a new memory."""
         meta = json.dumps({"tags": tags or []})
-        with sqlite3.connect(self.db_path) as conn:
+        with self._get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(
                 "INSERT INTO memories (category, content, metadata, importance) VALUES (?, ?, ?, ?)",
@@ -88,7 +94,7 @@ class LongTermMemory:
 
     def recall(self, query: str, limit: int = 10, category: str | None = None) -> list[dict[str, Any]]:
         """Searches memories using FTS5."""
-        with sqlite3.connect(self.db_path) as conn:
+        with self._get_connection() as conn:
             conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
             
@@ -111,7 +117,7 @@ class LongTermMemory:
 
     def recall_recent(self, limit: int = 10, category: str | None = None) -> list[dict[str, Any]]:
         """Gets most recent memories."""
-        with sqlite3.connect(self.db_path) as conn:
+        with self._get_connection() as conn:
             conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
             
@@ -129,7 +135,7 @@ class LongTermMemory:
 
     def forget(self, memory_id: int) -> bool:
         """Deletes a memory by ID."""
-        with sqlite3.connect(self.db_path) as conn:
+        with self._get_connection() as conn:
             cursor = conn.cursor()
             cursor.execute("DELETE FROM memories WHERE id = ?", (memory_id,))
             return cursor.rowcount > 0

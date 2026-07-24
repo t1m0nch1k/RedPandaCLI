@@ -196,12 +196,14 @@ class DesktopIPCServer:
                     return {"reply": f"Error: {str(e)}"}
                 
             case "tools.list":
+                from aios.desktop.schemas import ToolItem, ToolsListResponse
                 if hasattr(self.runtime, "executor") and self.runtime.executor:
-                    tools = []
-                    for t in self.runtime.executor.tool_registry.list():
-                        tools.append({"name": t.name, "description": t.description})
-                    return {"tools": tools}
-                return {"tools": []}
+                    tools = [
+                        ToolItem(name=t.name, description=t.description)
+                        for t in self.runtime.executor.tool_registry.list()
+                    ]
+                    return ToolsListResponse(tools=tools).model_dump()
+                return ToolsListResponse().model_dump()
 
             case "memory.store":
                 content = params.get("content")
@@ -363,11 +365,13 @@ class DesktopIPCServer:
                 return {"name": target.name, "content": content, "size": target.stat().st_size}
                 
             case "system.status":
-                return {
-                    "core": {"ok": True, "detail": "aios-cli runtime loaded"},
-                    "tools": 0,
-                    "modules": {},
-                }
+                from aios.desktop.schemas import SystemStatusCore, SystemStatusResponse
+                tool_count = len(self.runtime.executor.tool_registry.list()) if hasattr(self.runtime, "executor") and self.runtime.executor else 0
+                return SystemStatusResponse(
+                    core=SystemStatusCore(ok=True, detail="aios-cli runtime loaded"),
+                    tools=tool_count,
+                    modules={},
+                ).model_dump()
                 
             case "conversation.list":
                 return []

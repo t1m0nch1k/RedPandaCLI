@@ -20,7 +20,9 @@ class LLMProvider(ABC):
 
     async def get_client(self) -> httpx.AsyncClient:
         if self._client is None or self._client.is_closed:
-            self._client = httpx.AsyncClient(timeout=120)
+            self._client = httpx.AsyncClient(
+                timeout=httpx.Timeout(connect=10.0, read=60.0, write=30.0, pool=10.0)
+            )
         return self._client
 
     async def close(self) -> None:

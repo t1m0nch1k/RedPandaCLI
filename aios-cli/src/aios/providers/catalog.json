@@ -8,6 +8,13 @@
       "tags": ["google", "gemini", "multimodal"]
     },
     {
+      "name": "omniroute",
+      "description": "OmniRoute — unified AI model routing gateway for multi-provider testing and benchmarking",
+      "author": "AIOS",
+      "builtin": true,
+      "tags": ["omniroute", "gateway", "router", "testing"]
+    },
+    {
       "name": "anthropic",
       "description": "Anthropic Claude — advanced AI with safety features, supports tool use and long context",
       "author": "AIOS Community",

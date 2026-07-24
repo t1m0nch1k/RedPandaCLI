@@ -49,6 +49,11 @@ base_url = "http://localhost:5000/v1"
 [providers.textgen]
 base_url = "http://localhost:5000/v1"
 
+# ── Model Routers & Gateways ────────────────────────────────────
+[providers.omniroute]
+api_key = ""
+base_url = "http://localhost:8000/v1"
+
 # ── Major Cloud Providers ───────────────────────────────────────
 [providers.openai]
 api_key = ""

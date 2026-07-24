@@ -13,6 +13,7 @@ from aios import __version__
 from aios.cli.branding import CREAM, DIM, RUST, AgentState
 from aios.cli.slash import dispatch_slash_with_action, get_available_commands
 from aios.cli.tui.screens import (
+    CommandPaletteScreen,
     ConfigScreen,
     ConfirmScreen,
     HelpScreen,
@@ -100,6 +101,7 @@ class AIOS_TUI(App):
 
     BINDINGS = [
         Binding("ctrl+c", "quit", "Quit", priority=True, key_display="Ctrl+C"),
+        Binding("ctrl+k", "show_commands", "Palette", key_display="Ctrl+K"),
         Binding("ctrl+t", "show_tools", "Tools", key_display="Ctrl+T"),
         Binding("ctrl+h", "show_history", "History", key_display="Ctrl+H"),
         Binding("ctrl+n", "new_conversation", "New", key_display="Ctrl+N"),
@@ -195,6 +197,12 @@ class AIOS_TUI(App):
                 suggestions_widget.display = False
         else:
             suggestions_widget.display = False
+
+    def action_show_commands(self) -> None:
+        def on_cmd(cmd: str | None) -> None:
+            if cmd:
+                self.run_worker(self._handle_slash(cmd), exclusive=True)
+        self.push_screen(CommandPaletteScreen(), on_cmd)
 
     def on_key(self, event: Key) -> None:
         try:

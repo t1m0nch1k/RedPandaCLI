@@ -505,3 +505,66 @@ class ConfirmScreen(ModalScreen[bool]):
 
     def action_reject(self) -> None:
         self.dismiss(False)
+
+
+class CommandPaletteScreen(ModalScreen[str | None]):
+    CSS = """
+    CommandPaletteScreen {
+        align: center middle;
+    }
+    #palette_container {
+        width: 60;
+        height: auto;
+        max-height: 20;
+        background: #1a1d23;
+        border: thick #d1491f;
+        padding: 1 2;
+    }
+    #palette_title {
+        text-style: bold;
+        color: #d1491f;
+        padding-bottom: 1;
+    }
+    #palette_input {
+        margin-bottom: 1;
+    }
+    """
+
+    COMMANDS = [
+        ("/help", "Show help and documentation"),
+        ("/config", "Open configuration panel"),
+        ("/models", "Select active LLM model"),
+        ("/tools", "List registered capabilities"),
+        ("/provider", "Select model provider"),
+        ("/history", "View conversation history"),
+        ("/doctor", "Run diagnostic health check"),
+        ("/clear", "Clear chat transcript"),
+        ("/exit", "Exit application"),
+    ]
+
+    def compose(self) -> ComposeResult:
+        with Container(id="palette_container"):
+            yield Static("⚡ Command Palette (Ctrl+K)", id="palette_title")
+            yield Input(placeholder="Type command name...", id="palette_input")
+            yield OptionList(*[f"{cmd}  — {desc}" for cmd, desc in self.COMMANDS], id="palette_list")
+
+    def on_input_changed(self, event: Input.Changed) -> None:
+        query = event.value.lower()
+        filtered = [
+            f"{cmd}  — {desc}"
+            for cmd, desc in self.COMMANDS
+            if query in cmd.lower() or query in desc.lower()
+        ]
+        opt_list = self.query_one("#palette_list", OptionList)
+        opt_list.clear_options()
+        for f in filtered:
+            opt_list.add_option(f)
+
+    def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
+        raw_text = str(event.option.prompt)
+        cmd = raw_text.split(" ")[0]
+        self.dismiss(cmd)
+
+    def on_key(self, event) -> None:
+        if event.key == "escape":
+            self.dismiss(None)
